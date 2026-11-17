@@ -22,15 +22,25 @@ class Engine:
     LEGAL_PATTERNS = [
         r"\blawyer\b",
         r"\bsolicitor\b",
+        r"\battorney\b",
         r"\blegal action\b",
         r"\btake legal action\b",
+        r"\blegal advice\b",
+        r"\blegal counsel\b",
+        r"\blegal team\b",
         r"\bconsumer protection\b",
         r"\bconsumer authority\b",
         r"\bconsumer rights\b",
-        r"\bregulator\b",
-        r"\bfile a complaint\b",
-        r"\bmake a formal complaint\b",
-        r"\bcomplaint to the authorities\b",
+        r"\btrading standards\b",
+        r"\bregulator(y)?\b",
+        r"\bombudsman\b",
+        r"\b(file|make|lodge|submit)\s+a\s+(formal\s+)?complaint\b",
+        r"\bformal complaint\b",
+        r"\bcomplaint to (the )?authorities\b",
+        r"\breport (you|this|the company) to\b",
+        r"\bsmall claims\b",
+        r"\b(go to |take this to )?court\b",
+        r"\bsue\b",
         r"\bautoridade de defesa do consumidor\b",
         r"\bdefesa do consumidor\b",
         r"\blivro de reclamacoes\b",
@@ -40,22 +50,20 @@ class Engine:
     ]
 
     HUMAN_REQUEST_PATTERNS = [
-        r"\bspeak to a human\b",
-        r"\btalk to a human\b",
-        r"\bspeak with a human\b",
-        r"\btalk with a human\b",
-        r"\bhuman agent\b",
-        r"\breal person\b",
-        r"\blive agent\b",
-        r"\bconnect me with (a )?(human|person|agent)\b",
-        r"\btransfer me to (a )?(human|person|agent)\b",
-        r"\bi want a human\b",
-        r"\bi need a human\b",
+        r"\b(speak|talk|chat)\s+(to|with)\s+(a\s+)?(human|person|real\s+person|live\s+agent|agent|representative|advisor|specialist|supervisor|manager|someone)\b",
+        r"\b(connect|transfer|put|pass|hand|route|escalate)\s+(me|this|my\s+case)\s+(over\s+|through\s+)?(to|with)\s+(a\s+)?(human|person|real\s+person|agent|representative|advisor|supervisor|manager|someone)\b",
+        r"\b(get|give|find)\s+(me\s+)?(a\s+)?(human|real\s+person|live\s+agent|representative|agent)\b",
+        r"\bis there (a\s+)?(human|real\s+person|live\s+agent|someone)\b",
+        r"\b(human|live)\s+(agent|support|assistance|representative|person|operator|staff)\b",
+        r"\b(want|need|prefer|would like)\s+(to\s+(speak|talk|chat)\s+(to|with)\s+)?(a\s+)?(human|person|real\s+person|live\s+agent|representative|someone)\b",
+        r"\b(anyone|someone)\s+(i\s+can\s+|to\s+)(speak|talk|chat)\s+(to|with)\b",
+        r"\bnot\s+(a\s+)?(bot|robot|ai|machine|automated)\b",
         r"\bdo not want to talk to a bot\b",
         r"\bdont want to talk to a bot\b",
-        r"\bquero falar com uma pessoa\b",
-        r"\bquero falar com um humano\b",
-        r"\bquero falar com um agente\b",
+        r"\bsomeone from (your )?(team|support|staff|company|department)\b",
+        r"\bcustomer (service|support) (agent|representative|person|team)\b",
+        r"\bquero falar com (uma pessoa|um humano|um agente|alguem)\b",
+        r"\bfalar com (uma pessoa|um humano|um agente|alguem)\b",
         r"\bassistente humano\b",
         r"\boperador humano\b",
         r"\btransfira me\b",
@@ -63,48 +71,47 @@ class Engine:
 
     REFUND_PATTERNS = [
         r"\brefund\b",
+        r"\breimburse\b",
+        r"\breimbursement\b",
         r"\bmoney back\b",
-        r"\breturn my money\b",
-        r"\bwant my money back\b",
-        r"\bgive me my money back\b",
-        r"\bfull reimbursement\b",
+        r"\bmoney returned\b",
+        r"\b(return|refund)\s+(all\s+|the\s+|my\s+)?(money|payment|amount|funds)\b",
+        r"\b(get|give)\s+(me\s+)?my\s+money\s+back\b",
+        r"\bcredit back\b",
+        r"\bchargeback\b",
+        r"\bcancel and refund\b",
         r"\breembolso\b",
         r"\bdevolucao do dinheiro\b",
+        r"\bdevolver o dinheiro\b",
         r"\bquero o meu dinheiro\b",
     ]
 
     FRUSTRATION_PATTERNS = [
         r"\bfrustrat(ed|ing|ion)\b",
-        r"\bthis is unacceptable\b",
-        r"\bunacceptable\b",
-        r"\bthis is ridiculous\b",
-        r"\bterrible service\b",
-        r"\bworst service\b",
-        r"\bvery disappointed\b",
-        r"\bextremely disappointed\b",
-        r"\bno one has helped\b",
-        r"\bnobody has helped\b",
-        r"\bno one has answered\b",
-        r"\bnobody has answered\b",
-        r"\bno response\b",
-        r"\bno reply\b",
-        r"\bignored my emails\b",
-        r"\bignored my messages\b",
-        r"\b(supposed to be here|supposed to arrive|"
-        r"should have arrived|was due).{0,40}\bthree days ago\b",
-        r"\bseveral days late\b",
-        r"\bway overdue\b",
-        r"\bstill waiting\b",
-        r"\bi have been waiting\b",
+        r"\b(this is |that is |completely |totally |simply )?(unacceptable|ridiculous|absurd|pathetic|useless)\b",
+        r"\b(terrible|horrible|awful|worst|poor|bad)\s+(service|experience|support|delivery)\b",
+        r"\b(very|extremely|really|deeply|so)\s+disappointed\b",
+        r"\bdisappointing\b",
+        r"\b(no one|nobody)\s+(has\s+)?(helped|answered|replied|responded|got back)\b",
+        r"\bno (response|reply|answer|update)\b",
+        r"\bignored my (emails?|messages?|requests?|calls?|tickets?)\b",
+        r"\b(supposed to be here|supposed to arrive|should have arrived|was due|expected|promised).{0,40}\b(\d+|a few|several|many|some|one|two|three|four|five|six|seven|last|yesterday|ago|days?|weeks?|hours?|months?)\b",
+        r"\b(delayed|late|overdue|missing|lost|stuck)\s+(for\s+)?(\d+|a few|several|many|some|days?|weeks?|hours?)\b",
+        r"\b(order|package|parcel|delivery|item|shipment)\s+(is|was)\s+(late|delayed|overdue|missing|lost)\b",
+        r"\b(several|many|\d+)\s+(days|weeks|hours)\s+(late|overdue|ago)\b",
+        r"\b(way|long)\s+overdue\b",
+        r"\b(still|been)\s+waiting\b",
+        r"\b(never|(still\s+)?(has|have|had)\s+not)\s+(arrived|received|delivered|come)\b",
+        r"\bwaste of (time|money)\b",
+        r"\bfed up\b",
+        r"\bsick of\b",
+        r"\btired of\b",
         r"\bnot acceptable\b",
         r"\bnao e aceitavel\b",
         r"\binaceitavel\b",
-        r"\bestou frustrado\b",
-        r"\bestou frustrada\b",
-        r"\bmuito desapontado\b",
-        r"\bmuito desapontada\b",
-        r"\bninguem respondeu\b",
-        r"\bninguem ajudou\b",
+        r"\bestou frustrad[oa]\b",
+        r"\bmuito desapontad[oa]\b",
+        r"\bninguem (respondeu|ajudou)\b",
         r"\bcontinuo a espera\b",
     ]
 
@@ -123,6 +130,8 @@ class Engine:
         "maybe",
         "whatever you want",
         "do what you want",
+        "whatever do what you want",
+        "do whatever you want",
         "tanto faz",
         "pronto",
         "esta bem",
@@ -131,27 +140,70 @@ class Engine:
         "nao",
     }
 
+    SHORT_ACKNOWLEDGEMENTS = {
+        "thanks",
+        "thank you",
+        "thanks a lot",
+        "many thanks",
+        "appreciate it",
+        "much appreciated",
+        "understood",
+        "understood thanks",
+        "understood thank you",
+        "thanks understood",
+        "thank you understood",
+        "got it",
+        "got it thanks",
+        "got it thank you",
+        "ok got it",
+        "okay got it",
+        "ok thanks",
+        "okay thanks",
+        "ok thank you",
+        "okay thank you",
+        "alright thanks",
+        "all good",
+        "all good thanks",
+        "sounds good",
+        "makes sense",
+        "fair enough",
+        "will do",
+        "noted",
+        "noted thanks",
+        "great thanks",
+        "perfect thanks",
+        "obrigado",
+        "obrigada",
+        "muito obrigado",
+        "muito obrigada",
+        "entendido",
+        "entendido obrigado",
+        "entendido obrigada",
+        "ok obrigado",
+        "ok obrigada",
+    }
+
     CLOSURE_PATTERNS = [
         r"\bthat is all i needed\b",
+        r"\bthat is all( for now)?\b",
         r"\bthat is everything\b",
-        r"\bproblem solved\b",
-        r"\beverything is solved\b",
-        r"\beverything is resolved\b",
-        r"\bthat solved it\b",
-        r"\bwe are all set\b",
-        r"\bi am all set\b",
-        r"\bno more questions\b",
+        r"\bnothing else needed\b",
+        r"\bthat answers (my question|everything|all my questions)\b",
+        r"\bproblem (is )?solved\b",
+        r"\bissue (is )?(solved|resolved)\b",
+        r"\beverything is (solved|resolved)\b",
+        r"\bthat (solved|fixed) it\b",
+        r"\byou (solved|resolved|fixed) (my|the) (problem|issue)\b",
+        r"\b(we are|i am) all set\b",
+        r"\bno (more|further) questions\b",
         r"\bthank you,? that is all\b",
         r"\bthanks,? that is all\b",
         r"\bficou tudo resolvido\b",
-        r"\bestá tudo resolvido\b",
         r"\besta tudo resolvido\b",
-        r"\bestá resolvido\b",
         r"\besta resolvido\b",
         r"\bficou resolvido\b",
         r"\bja esta resolvido\b",
-        r"\bobrigado,? ficou tudo resolvido\b",
-        r"\bobrigada,? ficou tudo resolvido\b",
+        r"\bobrigad[oa],? ficou tudo resolvido\b",
     ]
 
     NEGATION_WORDS = {
@@ -180,7 +232,6 @@ class Engine:
         "jamais",
     }
 
-    # Standardize common contractions before pattern matching.
     CONTRACTIONS = {
         r"\bcan't\b": "cannot",
         r"\bcannot\b": "cannot",
@@ -198,10 +249,10 @@ class Engine:
         r"\bhasn't\b": "has not",
         r"\bhaven't\b": "have not",
         r"\bhadn't\b": "had not",
-        r"\bI'm\b": "i am",
-        r"\bI've\b": "i have",
-        r"\bI'll\b": "i will",
-        r"\bI'd\b": "i would",
+        r"\bi'm\b": "i am",
+        r"\bi've\b": "i have",
+        r"\bi'll\b": "i will",
+        r"\bi'd\b": "i would",
         r"\byou're\b": "you are",
         r"\byou've\b": "you have",
         r"\byou'll\b": "you will",
@@ -230,30 +281,18 @@ class Engine:
 
     @staticmethod
     def _normalize_text(text):
-        """
-        Normalize accents, apostrophes, contractions and whitespace.
-
-        This gives the policy a consistent representation for
-        English and Portuguese pattern matching.
-        """
         text = str(text).lower().strip()
-
-        # Normalize curly apostrophes to standard apostrophes.
         text = text.replace("’", "'").replace("‘", "'")
 
-        # Expand common contractions.
         for pattern, replacement in Engine.CONTRACTIONS.items():
             text = re.sub(pattern, replacement, text)
 
-        # Normalize accented characters.
         text = unicodedata.normalize("NFKD", text)
-
         text = "".join(
             character
             for character in text
             if not unicodedata.combining(character)
         )
-
         return re.sub(r"\s+", " ", text).strip()
 
     @staticmethod
@@ -264,15 +303,7 @@ class Engine:
         )
 
     def _has_negation_before(self, text, match_start):
-        """
-        Detect a nearby negation before a matched phrase.
-
-        Negation is checked within the same sentence or clause,
-        rather than across an entire previous sentence.
-        """
         preceding_text = text[:match_start]
-
-        # Restrict the search to the current clause.
         clause_parts = re.split(r"[.!?;:,]", preceding_text)
         current_clause = clause_parts[-1]
 
@@ -280,7 +311,6 @@ class Engine:
             r"\b[\w']+\b",
             current_clause,
         )
-
         recent_words = preceding_words[-5:]
 
         return any(
@@ -289,10 +319,6 @@ class Engine:
         )
 
     def _is_unnegated_match(self, text, patterns):
-        """
-        Return True if at least one pattern matches without
-        a preceding negation.
-        """
         for pattern in patterns:
             for match in re.finditer(pattern, text):
                 if not self._has_negation_before(
@@ -300,57 +326,25 @@ class Engine:
                     match.start(),
                 ):
                     return True
-
         return False
 
     def _is_legal_signal(self, text):
-        return self._is_unnegated_match(
-            text,
-            self.LEGAL_PATTERNS,
-        )
+        return self._is_unnegated_match(text, self.LEGAL_PATTERNS)
 
     def _is_human_request(self, text):
-        return self._is_unnegated_match(
-            text,
-            self.HUMAN_REQUEST_PATTERNS,
-        )
+        return self._is_unnegated_match(text, self.HUMAN_REQUEST_PATTERNS)
 
     def _is_refund_request(self, text):
-        return self._is_unnegated_match(
-            text,
-            self.REFUND_PATTERNS,
-        )
+        return self._is_unnegated_match(text, self.REFUND_PATTERNS)
 
     def _is_frustration_signal(self, text):
-        """
-        Detect explicit frustration while respecting negation.
-
-        For example:
-        - "I am frustrated" -> True
-        - "I am not frustrated" -> False
-        - "This is unacceptable" -> True
-        """
-        return self._is_unnegated_match(
-            text,
-            self.FRUSTRATION_PATTERNS,
-        )
+        return self._is_unnegated_match(text, self.FRUSTRATION_PATTERNS)
 
     def _is_closure(self, text):
-        """
-        Detect explicit resolution language while respecting
-        negation.
-        """
-        return self._is_unnegated_match(
-            text,
-            self.CLOSURE_PATTERNS,
-        )
+        return self._is_unnegated_match(text, self.CLOSURE_PATTERNS)
 
     @staticmethod
     def _has_unresolved_request(text):
-        """
-        Prevent a closure phrase from ending a conversation
-        when the same message contains another question or request.
-        """
         if "?" in text:
             return True
 
@@ -372,73 +366,25 @@ class Engine:
             r"\bpreciso de\b",
             r"\bquero saber\b",
         ]
+        return Engine._matches_any(text, request_patterns)
 
-        return Engine._matches_any(
-            text,
-            request_patterns,
-        )
-
-    def _is_ambiguous(
-        self,
-        text,
-        confidence,
-        label,
-        message_count,
-        explicit_frustration,
-    ):
+    def _is_ambiguous(self, text, confidence):
         normalized = self._normalize_text(text)
-
-        clean_text = re.sub(
-            r"[^\w\s]",
-            "",
-            normalized,
-        )
-        clean_text = re.sub(
-            r"\s+",
-            " ",
-            clean_text,
-        ).strip()
-
+        clean_text = re.sub(r"[^\w\s]", "", normalized)
+        clean_text = re.sub(r"\s+", " ", clean_text).strip()
         words = clean_text.split()
 
-        ambiguous_phrases = self.AMBIGUOUS_PHRASES | {
-            "whatever do what you want",
-            "do whatever you want",
-        }
-
-        if clean_text in ambiguous_phrases:
+        if clean_text in self.AMBIGUOUS_PHRASES:
             return True
 
         if len(words) == 0:
             return True
 
-        # Very short messages usually lack enough context.
-        if len(words) == 1:
-            return words[0] not in {
-                "thanks",
-                "thank",
-                "obrigado",
-                "obrigada",
-            }
+        if clean_text in self.SHORT_ACKNOWLEDGEMENTS:
+            return False
 
-        # Low-confidence negative predictions must not silently
-        # influence the decision, regardless of message position
-        # or message length.
-        if confidence < self.CONFIDENCE_THRESHOLD:
-            if len(words) <= 2:
-                return True
-
-            negative_labels = {
-                "anger",
-                "frustration",
-                "sadness",
-            }
-
-            if (
-                label in negative_labels
-                and not explicit_frustration
-            ):
-                return True
+        if len(words) <= 2 and confidence < self.CONFIDENCE_THRESHOLD:
+            return True
 
         return False
 
@@ -449,7 +395,6 @@ class Engine:
     @staticmethod
     def _is_portuguese(text):
         normalized = Engine._normalize_text(text)
-
         indicators = {
             "obrigado",
             "obrigada",
@@ -462,30 +407,15 @@ class Engine:
             "ninguem",
             "devolucao",
             "ajuda",
+            "entendido",
+            "entrega",
+            "encomenda",
         }
-
-        words = set(
-            re.findall(r"\b\w+\b", normalized)
-        )
-
+        words = set(re.findall(r"\b\w+\b", normalized))
         return bool(words & indicators)
 
-    def _update_frustration_streak(
-        self,
-        text,
-        label,
-        confidence,
-    ):
-        """
-        Update the consecutive frustration counter.
-
-        Explicit textual frustration is accepted as direct evidence.
-
-        Emotion labels inferred by the model only count when their
-        confidence reaches CONFIDENCE_THRESHOLD.
-        """
+    def _update_frustration_streak(self, text, label, confidence):
         explicit_frustration = self._is_frustration_signal(text)
-
         affective_frustration = (
             label in {"frustration", "anger"}
             and confidence >= self.CONFIDENCE_THRESHOLD
@@ -509,6 +439,7 @@ class Engine:
         is_sarcastic,
         is_closure,
         has_unresolved_request,
+        voice_only_label=None,
     ):
         label = state["label"]
         confidence = float(state["confidence"])
@@ -529,26 +460,21 @@ class Engine:
         if is_sarcastic:
             return "ASK_CLARIFICATION"
 
-        # Priority 5: Explicit positive closure only.
-        # Positive emotion alone must never close a conversation.
-        if (
-            is_closure
-            and not has_unresolved_request
-        ):
+        # Priority 5: Explicit positive closure only when no request remains open.
+        if is_closure and not has_unresolved_request:
             return "CLOSE_POSITIVE"
 
-        # Priority 6: Ambiguous or unreliable input.
+        # Priority 6: Ambiguous or unreliable short input.
         if is_ambiguous:
             return "ASK_CLARIFICATION"
 
-        # Priority 7: Anger escalation.
+        # Priority 7: Anger escalation (low-confidence anger falls back safely to empathy).
         if label == "anger":
             if confidence < self.CONFIDENCE_THRESHOLD:
-                return "ASK_CLARIFICATION"
-
+                return "ANSWER_EMPATHIC"
             return "ESCALATE"
 
-        # Priority 8: Sustained frustration.
+        # Priority 8: Sustained frustration triggers human handoff.
         if frustration_streak >= self.FRUSTRATION_STREAK_LIMIT:
             return "OFFER_HUMAN"
 
@@ -556,98 +482,200 @@ class Engine:
         if frustration_streak > 0:
             return "ANSWER_EMPATHIC"
 
-        # Priority 10: General negative emotional states.
+        # Priority 10: General negative emotional states or angry/frustrated voice tone.
         if label in {"frustration", "sadness"}:
+            return "ANSWER_EMPATHIC"
+
+        if label == "neutral" and voice_only_label in {"anger", "frustration"}:
             return "ANSWER_EMPATHIC"
 
         return "ANSWER"
 
-    def _reply(self, action, text):
+    def _faq_reply(self, normalized_text, portuguese):
+        if re.search(r"\b(shipping|delivery)\s+(cost|fee|fees|price|charge|free)\b", normalized_text):
+            if portuguese:
+                return (
+                    "O envio padrão é gratuito em encomendas acima de 50 € "
+                    "e custa 4,99 € nas restantes encomendas."
+                )
+            return (
+                "Standard shipping is free on orders over €50, "
+                "and €4.99 for smaller orders."
+            )
+
+        if re.search(r"\b(delivery|shipping|arrive|ship|deliver|entrega|envio|chegar)\b", normalized_text):
+            if portuguese:
+                return (
+                    "As entregas padrão demoram normalmente entre 2 a 5 dias úteis. "
+                    "Pode partilhar o número da sua encomenda se quiser verificar o estado atual?"
+                )
+            return (
+                "Standard delivery typically takes 2 to 5 business days. "
+                "Would you like to share your order number so I can check its status?"
+            )
+
+        if re.search(r"\b(track|tracking|status|where is my order|where is my package|rastreio|estado|encomenda)\b", normalized_text):
+            if portuguese:
+                return (
+                    "Pode acompanhar a sua encomenda através do link de rastreio enviado por e-mail, "
+                    "ou indicar o número da encomenda para eu verificar."
+                )
+            return (
+                "You can track your package using the tracking link sent to your email, "
+                "or share your order number here and I can check it for you."
+            )
+
+        if re.search(r"\b(cancel|cancellation|cancelar|cancelamento)\b", normalized_text):
+            if portuguese:
+                return (
+                    "Pode cancelar a sua encomenda antes do envio através da sua conta "
+                    "ou indicando o número da encomenda aqui."
+                )
+            return (
+                "You can cancel your order anytime before it ships from your account page, "
+                "or share your order number here so I can assist you."
+            )
+
+        if re.search(r"\b(return|exchange|policy|send back|devolucao|troca|politica)\b", normalized_text):
+            if portuguese:
+                return (
+                    "Aceitamos devoluções e trocas no prazo de 30 dias após a entrega, "
+                    "desde que o artigo esteja nas condições originais."
+                )
+            return (
+                "We accept returns and exchanges within 30 days of delivery, "
+                "provided the item is in its original condition."
+            )
+
+        if re.search(r"\b(payment|pay|invoice|receipt|billing|pagamento|fatura|recibo)\b", normalized_text):
+            if portuguese:
+                return (
+                    "Aceitamos pagamentos por cartão de crédito/débito, PayPal e transferência bancária, "
+                    "e a fatura é enviada automaticamente por e-mail."
+                )
+            return (
+                "We accept credit/debit cards, PayPal, and bank transfers, "
+                "and your invoice is sent automatically by email after purchase."
+            )
+
+        if re.search(r"\b(hours|open|contact|support|available|horario|contacto|suporte)\b", normalized_text):
+            if portuguese:
+                return (
+                    "O nosso apoio ao cliente está disponível de segunda a sexta-feira, das 9h00 às 18h00."
+                )
+            return (
+                "Our customer support team is available Monday through Friday, from 9:00 AM to 6:00 PM."
+            )
+
+        if re.fullmatch(r"(hello|hi|hey|good morning|good afternoon|good evening|ola|bom dia|boa tarde|boa noite)[!. ]*", normalized_text):
+            if portuguese:
+                return "Olá! Como posso ajudar hoje?"
+            return "Hello! How can I help you today?"
+
+        if portuguese:
+            return (
+                "Claro! Estou aqui para ajudar. "
+                "Pode dizer-me mais sobre o que precisa?"
+            )
+        return (
+            "Of course! I'm here to help. "
+            "What would you like to know?"
+        )
+
+    def _reply(self, action, text, flags=None):
         portuguese = self._is_portuguese(text)
+        flags = flags or []
+        normalized_text = self._normalize_text(text)
+
+        audio_notice = ""
+        if "voice_processing_failed" in flags:
+            if portuguese:
+                audio_notice = (
+                    "Não foi possível processar o áudio, por isso respondo com base na sua mensagem. "
+                )
+            else:
+                audio_notice = (
+                    "I couldn't process the audio, so I'm responding based on your message. "
+                )
 
         if action == "ESCALATE":
             if portuguese:
-                return (
+                body = (
                     "Compreendo a gravidade da situação. "
                     "Vou encaminhar o caso para uma equipa "
                     "humana responsável por analisar e resolver "
                     "este problema."
                 )
-
-            return (
-                "I understand the seriousness of this situation. "
-                "I will escalate your case to a human support team "
-                "so they can review and address it."
-            )
+            else:
+                body = (
+                    "I understand the seriousness of this situation. "
+                    "I will escalate your case to a human support team "
+                    "so they can review and address it."
+                )
+            return audio_notice + body
 
         if action == "OFFER_HUMAN":
             if portuguese:
-                return (
+                body = (
                     "Compreendo. Vou encaminhar o seu pedido "
                     "para um agente humano que poderá ajudar "
                     "com esta situação."
                 )
-
-            return (
-                "I understand. I can connect you with a human "
-                "support agent who can help resolve this issue."
-            )
+            else:
+                body = (
+                    "I understand. I can connect you with a human "
+                    "support agent who can help resolve this issue."
+                )
+            return audio_notice + body
 
         if action == "ASK_CLARIFICATION":
             if portuguese:
-                return (
+                body = (
                     "Quero ter a certeza de que compreendi "
                     "corretamente. Pode explicar um pouco melhor "
                     "o que pretende?"
                 )
-
-            return (
-                "I want to make sure I understand you correctly. "
-                "Could you clarify what you mean?"
-            )
+            else:
+                body = (
+                    "I want to make sure I understand you correctly. "
+                    "Could you clarify what you mean?"
+                )
+            return audio_notice + body
 
         if action == "CLOSE_POSITIVE":
             if portuguese:
-                return (
+                body = (
                     "Fico contente por saber que ficou tudo "
                     "resolvido. Obrigado pelo contacto!"
                 )
-
-            return (
-                "I'm glad everything is resolved. "
-                "Thank you for contacting us!"
-            )
+            else:
+                body = (
+                    "I'm glad everything is resolved. "
+                    "Thank you for contacting us!"
+                )
+            return audio_notice + body
 
         if action == "ANSWER_EMPATHIC":
             if portuguese:
-                return (
+                body = (
                     "Compreendo a sua frustração e lamento "
                     "o incómodo. Vou ajudar a encontrar uma "
                     "solução para esta situação."
                 )
-
-            return (
-                "I understand your frustration, and I'm sorry "
-                "for the inconvenience. I'll help you find "
-                "a solution."
-            )
+            else:
+                body = (
+                    "I understand your frustration, and I'm sorry "
+                    "for the inconvenience. I'll help you find "
+                    "a solution."
+                )
+            return audio_notice + body
 
         if action == "ANSWER":
-            if portuguese:
-                return (
-                    "Claro! Estou aqui para ajudar. "
-                    "Pode dizer-me mais sobre o que precisa?"
-                )
+            return audio_notice + self._faq_reply(normalized_text, portuguese)
 
-            return (
-                "Of course! I'm here to help. "
-                "What would you like to know?"
-            )
-
-        return "How can I help?"
+        return audio_notice + "How can I help?"
 
     def process(self, text, audio_path=None, image_path=None):
-
         if not isinstance(text, str):
             text = "" if text is None else str(text)
 
@@ -657,6 +685,7 @@ class Engine:
             return {
                 "valence": 0.0,
                 "activity": 0.0,
+                "dominance": 0.0,
                 "confidence": 0.1,
                 "label": "neutral",
                 "action": "ASK_CLARIFICATION",
@@ -677,55 +706,28 @@ class Engine:
         )
 
         flags = list(state.get("flags") or [])
-
         normalized_text = self._normalize_text(text)
 
-        message_details = state.get("details", {})
-
-        message_count = message_details.get(
-            "message_count",
-            self.affective_state.message_count,
-        )
+        message_details = state.get("details") or {}
+        voice_details = message_details.get("voice") or {}
+        voice_only_info = voice_details.get("voice_only") or {}
+        voice_only_label = voice_only_info.get("label")
 
         confidence = float(state["confidence"])
 
-        # Explicit policy signals.
         is_legal = self._is_legal_signal(normalized_text)
+        is_human_request = self._is_human_request(normalized_text)
+        is_refund_request = self._is_refund_request(normalized_text)
+        explicit_frustration = self._is_frustration_signal(normalized_text)
+        is_sarcastic = self._is_sarcastic_or_uncertain(flags)
+        is_closure = self._is_closure(normalized_text)
+        has_unresolved_request = self._has_unresolved_request(normalized_text)
 
-        is_human_request = self._is_human_request(
-            normalized_text
-        )
-
-        is_refund_request = self._is_refund_request(
-            normalized_text
-        )
-
-        explicit_frustration = self._is_frustration_signal(
-            normalized_text
-        )
-
-        is_sarcastic = self._is_sarcastic_or_uncertain(
-            flags
-        )
-
-        is_closure = self._is_closure(
-            normalized_text
-        )
-
-        has_unresolved_request = self._has_unresolved_request(
-            normalized_text
-        )
-
-        # Confidence-aware ambiguity detection.
         is_ambiguous = self._is_ambiguous(
             text=text,
             confidence=confidence,
-            label=state["label"],
-            message_count=message_count,
-            explicit_frustration=explicit_frustration,
         )
 
-        # Confidence-aware consecutive frustration tracking.
         frustration_streak = self._update_frustration_streak(
             normalized_text,
             state["label"],
@@ -742,20 +744,21 @@ class Engine:
             is_sarcastic=is_sarcastic,
             is_closure=is_closure,
             has_unresolved_request=has_unresolved_request,
+            voice_only_label=voice_only_label,
         )
 
         if action not in self.ACTIONS:
             action = "ANSWER"
 
-        reply = self._reply(
-            action,
-            text,
+        reply = self._reply(action, text, flags=flags)
+
+        voice_empathy_override = (
+            action == "ANSWER_EMPATHIC"
+            and state["label"] == "neutral"
+            and voice_only_label in {"anger", "frustration"}
         )
 
-        details = dict(
-            state.get("details", {})
-        )
-
+        details = dict(message_details)
         details.update({
             "frustration_streak": frustration_streak,
             "frustration_streak_limit": self.FRUSTRATION_STREAK_LIMIT,
@@ -767,12 +770,14 @@ class Engine:
             "possible_sarcasm": is_sarcastic,
             "positive_closure": is_closure,
             "unresolved_request": has_unresolved_request,
+            "voice_empathy_override": voice_empathy_override,
             "decision_policy": "topic_3",
         })
 
         return {
             "valence": float(state["valence"]),
             "activity": float(state["activity"]),
+            "dominance": float(state.get("dominance", 0.0)),
             "confidence": confidence,
             "label": state["label"],
             "action": action,
