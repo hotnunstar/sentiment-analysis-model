@@ -2,8 +2,6 @@
 
 **Topic owner:** Salim Houmaidan
 
-**Revision:** 17 November 2026
-
 **Scope:** Text perception in the integrated NovaShop engine, with the October prototype evaluation included as supporting evidence.
 
 The original text estimator and scenario checks were developed by Salim Houmaidan. The integrated version includes the cross-platform fingerprint fix and dominance update reported by Nuno Araújo.
