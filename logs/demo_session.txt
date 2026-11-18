@@ -1,0 +1,65 @@
+AFFECTIVE COMPUTING PROJECT - SESSION LOG
+Session started : 2026-11-18 15:17:40
+Engine          : engine.engine.Engine
+Log file        : /Users/tomassilva/Documents/Documentos/AC_Project/sentiment-analysis-model/logs/session_20261118_151740.txt
+This is a plain text file. Every message, the map values (x = valence, y = activity),
+the confidence and the chosen action are written below in order.
+------------------------------------------------------------------------
+[15:17:40] SCENARIO M2 - Frustration that grows over the conversation
+------------------------------------------------------------------------
+#1  15:17:40  source=scenario:M2
+INPUT      : Hi, my order 4821 has not arrived yet.
+MAP (x,y)   : valence=-0.03  activity=+0.10  dominance=+0.10
+CONFIDENCE : 0.61
+LABEL      : neutral
+ACTION     : ANSWER_EMPATHIC
+FLAGS      : -
+LATENCY    : 37 ms
+REPLY      : I understand your frustration, and I'm sorry for the inconvenience. I'll help you find a solution.
+DETAILS    : {'raw_valence': -0.014433369040489197, 'raw_activity': 0.034265145659446716, 'raw_dominance': 0.027148844674229622, 'message_count': 1, 'word_count': 8, 'message_weight': [0.649, 0.561, 0.543], 'label_probabilities': {'neutral': 0.609, 'anger': 0.011, 'sadness': 0.025, 'joy': 0.016, 'calm': 0.155, 'frustration': 0.184}, 'frustration_streak': 1, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#2  15:17:40  source=scenario:M2
+INPUT      : It was supposed to be here three days ago.
+MAP (x,y)   : valence=-0.03  activity=+0.12  dominance=+0.07
+CONFIDENCE : 0.62
+LABEL      : neutral
+ACTION     : ANSWER_EMPATHIC
+FLAGS      : -
+LATENCY    : 18 ms
+REPLY      : I understand your frustration, and I'm sorry for the inconvenience. I'll help you find a solution.
+DETAILS    : {'raw_valence': -0.00842602550983429, 'raw_activity': 0.027802668511867523, 'raw_dominance': 0.005711518228054047, 'message_count': 2, 'word_count': 9, 'message_weight': [0.604, 0.589, 0.586], 'label_probabilities': {'neutral': 0.62, 'anger': 0.013, 'sadness': 0.03, 'joy': 0.02, 'calm': 0.146, 'frustration': 0.171}, 'frustration_streak': 2, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#3  15:17:40  source=scenario:M2
+INPUT      : Nobody has answered my two emails. This is really frustrating.
+MAP (x,y)   : valence=-0.44  activity=+0.44  dominance=-0.05
+CONFIDENCE : 0.49
+LABEL      : frustration
+ACTION     : OFFER_HUMAN
+FLAGS      : -
+LATENCY    : 32 ms
+REPLY      : I understand. I can connect you with a human support agent who can help resolve this issue.
+DETAILS    : {'raw_valence': -0.2135816514492035, 'raw_activity': 0.1313505470752716, 'raw_dominance': -0.018016088753938675, 'message_count': 3, 'word_count': 10, 'message_weight': [0.596, 0.594, 0.593], 'label_probabilities': {'neutral': 0.279, 'anger': 0.073, 'sadness': 0.136, 'joy': 0.016, 'calm': 0.01, 'frustration': 0.487}, 'frustration_streak': 3, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#4  15:17:40  source=scenario:M2
+INPUT      : This is unacceptable! I want my money back!!
+MAP (x,y)   : valence=-0.59  activity=+1.00  dominance=+0.52
+CONFIDENCE : 0.76
+LABEL      : anger
+ACTION     : OFFER_HUMAN
+FLAGS      : -
+LATENCY    : 43 ms
+REPLY      : I understand. I can connect you with a human support agent who can help resolve this issue.
+DETAILS    : {'raw_valence': -0.20887836813926697, 'raw_activity': 0.4304176867008209, 'raw_dominance': 0.1313072144985199, 'message_count': 4, 'word_count': 8, 'message_weight': [0.595, 0.595, 0.595], 'label_probabilities': {'neutral': 0.013, 'anger': 0.76, 'sadness': 0.024, 'joy': 0.033, 'calm': 0.0, 'frustration': 0.17}, 'frustration_streak': 4, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': True, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#5  15:17:40  source=scenario:M2
+INPUT      : I am furious. I will contact a lawyer if this is not solved today.
+MAP (x,y)   : valence=-0.70  activity=+1.00  dominance=+0.56
+CONFIDENCE : 0.56
+LABEL      : anger
+ACTION     : ESCALATE
+FLAGS      : -
+LATENCY    : 22 ms
+REPLY      : I understand the seriousness of this situation. I will escalate your case to a human support team so they can review and address it.
+DETAILS    : {'raw_valence': -0.22888658940792084, 'raw_activity': 0.1407986283302307, 'raw_dominance': 0.08307559788227081, 'message_count': 5, 'word_count': 14, 'message_weight': [0.619, 0.619, 0.619], 'label_probabilities': {'neutral': 0.038, 'anger': 0.558, 'sadness': 0.017, 'joy': 0.009, 'calm': 0.0, 'frustration': 0.377}, 'frustration_streak': 5, 'frustration_streak_limit': 3, 'legal_signal': True, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+Session ended: 2026-11-18 15:17:40   messages: 5

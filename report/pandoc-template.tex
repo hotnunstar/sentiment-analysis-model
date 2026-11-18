@@ -1,0 +1,65 @@
+% Pandoc LaTeX template — NovaShop report (layout-safe tables)
+\documentclass[$if(fontsize)$$fontsize$,$endif$a4paper,$if(lang)$$babel-lang$,$endif$]{article}
+\usepackage{xcolor}
+\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{textcomp}
+\emergencystretch=2.5em
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp}
+\fi
+\usepackage{lmodern}
+\usepackage{setspace}
+\setstretch{1.15}
+\usepackage{longtable,booktabs,array}
+% Pandoc sets \LTcaptype{none} around pipe tables; define a silent caption type.
+\usepackage{caption}
+\DeclareCaptionType{none}[]{}
+\captionsetup[none]{labelformat=empty,textformat=empty}
+\usepackage{tabularx}
+\usepackage{calc}
+\usepackage{ragged2e}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+% Pandoc pipe-table column widths (required by generated .tex)
+\providecommand{\real}[1]{#1}
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setlength{\LTpre}{4pt}
+\setlength{\LTpost}{6pt}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue}
+\usepackage{xurl}
+\Urlmuskip=0mu plus 1mu
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible}
+$if(subtitle)$
+\usepackage{titling}
+$endif$
+$if(title)$
+\title{$title$}
+$if(subtitle)$
+\subtitle{$subtitle$}
+$endif$
+$if(author)$
+\author{$for(author)$$author$$sep$ \\ $endfor$}
+$endif$
+\date{$if(date)$$date$$endif$}
+$endif$
+$if(abstract)$
+\renewcommand{\abstractname}{Abstract}
+$endif$
+\begin{document}
+$if(title)$
+\maketitle
+$if(abstract)$
+\begin{abstract}
+$abstract$
+\end{abstract}
+$endif$
+$endif$
+$body$
+\end{document}
