@@ -30,7 +30,7 @@ The six actions are `ANSWER`, `ANSWER_EMPATHIC`, `ASK_CLARIFICATION`,
 
 ## Requirements
 
-- Python 3.9 or later. The project was tested by the group with Python 3.13.
+- Python 3.9 or later. The project was tested by the group with **Python 3.13** (recommended for the optional **voice** channel; emotion2vec via FunASR may not load on Python 3.14).
 - Packages listed in `requirements.txt`.
 - Tkinter for the graphical interface.
 - The text model weight described below.
@@ -168,3 +168,7 @@ be included inside the delivered `code/logs/` folder.
 5. Expand the session log and open its corresponding file from `logs/`.
 6. Demonstrate one optional voice example if the voice weight is installed.
 7. Copy the demonstrated log to `logs/demo_session.txt` for delivery.
+
+## Group report
+
+The written report is in **`report/`**: edit `report/report.md`, build `report/group_report.pdf` (see `report/README.md`). Include `report/report.pdf` in the Moodle zip next to `code/` and the video.
