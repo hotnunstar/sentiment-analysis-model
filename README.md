@@ -1,50 +1,170 @@
-# NovaShop Affective Assistant — Group Project
+# NovaShop Affective Assistant
 
-Tested with Python 3.13. Requires the packages listed in `requirements.txt`.
+NovaShop is an offline customer-support assistant that estimates the customer's
+emotional state and chooses an appropriate response action. It accepts text and
+an optional WAV recording.
 
-## Install
+## What the engine returns
 
-```bash
-pip install -r requirements.txt
+For every message, `Engine.process()` returns:
+
+- `valence`, `activity`, `dominance`: affective map coordinates from `-1` to `1`;
+- `confidence`: confidence in the emotion label from `0` to `1`;
+- `label`: `neutral`, `joy`, `calm`, `frustration`, `anger` or `sadness`;
+- `action`: one of the six actions required by the project brief;
+- `reply`, `flags` and `details`: the response and diagnostic information.
+
+The six actions are `ANSWER`, `ANSWER_EMPATHIC`, `ASK_CLARIFICATION`,
+`OFFER_HUMAN`, `ESCALATE` and `CLOSE_POSITIVE`.
+
+## Project structure
+
+| Path | Purpose |
+|---|---|
+| `engine/` | Text/voice perception, affective state and decision policy |
+| `harness/` | Shared interface, contract, session and logging code |
+| `scenarios/` | Four mandatory and four practice conversations |
+| `tests/` | Contract, voice and Topic 4 integration tests |
+| `logs/` | Plain-text session logs created while the program runs |
+| `check_project.py` | Read-only installation and model-file check |
+
+## Requirements
+
+- Python 3.9 or later. The project was tested by the group with Python 3.13.
+- Packages listed in `requirements.txt`.
+- Tkinter for the graphical interface.
+- The text model weight described below.
+- The voice model weight only when using the optional voice channel.
+
+## Clean installation
+
+From the project root, create and activate a virtual environment.
+
+Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 ```
 
-On Linux, if tkinter is missing: `sudo apt install python3-tk`.
+macOS or Linux:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+On Linux, install Tkinter separately if necessary:
+
+```bash
+sudo apt install python3-tk
+```
 
 ## Model weights
 
-Two model files are too large for GitHub, so they are not in this repository.
-Download them from [Google Drive](https://drive.google.com/drive/folders/1mXXYlbqNvOcEIQl74V8zCEJdlOqwpjTS?usp=sharing)
-and place them here:
+The two encoder weights are too large for GitHub. Download them from the
+[group Google Drive folder](https://drive.google.com/drive/folders/1mXXYlbqNvOcEIQl74V8zCEJdlOqwpjTS?usp=sharing)
+and keep the filenames unchanged.
 
-```
-engine/models/text/encoder/model.safetensors          (253 MB, text model)
-engine/models/voice/encoder/emotion2vec_base.pt       (1.07 GB, voice model)
+Required for text mode:
+
+```text
+engine/models/text/encoder/model.safetensors          (about 253 MB)
 ```
 
-## Run
+Required only for the optional voice mode:
+
+```text
+engine/models/voice/encoder/emotion2vec_base.pt       (about 1.07 GB)
+```
+
+For an offline demonstration, download the required weights before disconnecting
+from the internet and include them in the delivered project copy.
+
+## Check the installation
+
+Run the read-only checker:
 
 ```bash
-python run_app.py                                                     # graphical interface
-python run_scenario.py scenarios/mandatory/M1_calm_faq.json           # mandatory scenario 1
-python run_scenario.py scenarios/mandatory/M2_growing_frustration.json # mandatory scenario 2
-python run_scenario.py scenarios/mandatory/M3_explicit_requests.json   # mandatory scenario 3
-python run_scenario.py scenarios/mandatory/M4_ambiguity_and_robustness.json # mandatory scenario 4
+python check_project.py
 ```
 
-## Voice (optional channel)
+`[READY] Text mode is ready` means the mandatory text system has its packages
+and model files. Missing voice items are reported as optional.
 
-In the interface, type a message, click **Audio (optional)...**, choose a WAV file (for example from
-`assets/audio/`), then press **Send**. The estimate combines text and voice; the voice-only reading is in the
-session log under `voice`. The first message with audio takes a few seconds while the voice model loads.
+## Run the application
 
-## Test
+Open the graphical interface:
 
 ```bash
-python -m unittest discover tests
+python run_app.py
 ```
 
-Expected output: `Ran 15 tests ... OK` (the voice engine tests are skipped if the voice model weights are missing).
+The interface shows the conversation, affective map, confidence, label, action,
+flags and session log. Select **3D view** to include dominance.
+
+To attach voice, type a message, choose **Audio (optional)...**, select a WAV
+file such as one from `assets/audio/`, and press **Send**.
+
+## Run the mandatory scenarios
+
+```bash
+python run_scenario.py scenarios/mandatory/M1_calm_faq.json
+python run_scenario.py scenarios/mandatory/M2_growing_frustration.json
+python run_scenario.py scenarios/mandatory/M3_explicit_requests.json
+python run_scenario.py scenarios/mandatory/M4_ambiguity_and_robustness.json
+```
+
+Each command prints the decisions and creates a plain-text log in `logs/`.
+
+## Tests
+
+Topic 4 integration tests do not load the large models:
+
+```bash
+python -m unittest tests.test_topic4 -v
+```
+
+Run the complete suite after installing the requirements and adding the text
+model weight:
+
+```bash
+python -m unittest discover tests -v
+```
+
+The repository currently contains 23 tests: 3 engine-contract tests, 12 voice
+tests and 8 Topic 4 integration tests. Four voice integration tests are skipped
+when the optional voice weight is absent.
 
 ## Session logs
 
-Every session is saved automatically to `logs/` as a plain `.txt` file.
+Every graphical or command-line session creates a UTF-8 `.txt` file in `logs/`.
+The log records input, optional media, map values, confidence, label, action,
+flags, latency, reply, diagnostic details and contract problems.
+
+After recording, copy the log used in the final video to
+`logs/demo_session.txt`. This specific filename is not ignored by Git and should
+be included inside the delivered `code/logs/` folder.
+
+## Troubleshooting
+
+- `No module named ...`: activate the virtual environment and install
+  `requirements.txt`.
+- Missing `model.safetensors`: download the required text weight and place it at
+  the exact path shown above.
+- Voice is skipped or reports `voice_processing_failed`: add
+  `emotion2vec_base.pt`; text processing remains available.
+- Tkinter import error on Linux: install `python3-tk`.
+- Model fingerprint error: do not rename or edit files inside the encoder folder.
+
+## Reproducible demonstration order
+
+1. Run `python check_project.py`.
+2. Run `python -m unittest discover tests -v`.
+3. Run `python run_app.py`.
+4. Play mandatory scenarios M1, M2, M3 and M4.
+5. Expand the session log and open its corresponding file from `logs/`.
+6. Demonstrate one optional voice example if the voice weight is installed.
+7. Copy the demonstrated log to `logs/demo_session.txt` for delivery.

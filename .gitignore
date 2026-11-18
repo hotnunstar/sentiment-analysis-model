@@ -10,6 +10,7 @@ engine/data/voice/audio/
 
 logs/*
 !logs/README.txt
+!logs/demo_session.txt
 
 # Model weights too large for GitHub (100 MB file limit), shared via Google Drive:
 # https://drive.google.com/drive/folders/1mXXYlbqNvOcEIQl74V8zCEJdlOqwpjTS?usp=sharing
