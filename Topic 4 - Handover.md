@@ -1,6 +1,6 @@
 # Topic 4 — Software, Interface, Tests and Demo
 
-**Topic owner:** add student name before delivery
+**Topic owner:** Tomás
 
 ## 1. Responsibility
 
