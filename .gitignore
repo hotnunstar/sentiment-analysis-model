@@ -16,3 +16,15 @@ logs/*
 # https://drive.google.com/drive/folders/1mXXYlbqNvOcEIQl74V8zCEJdlOqwpjTS?usp=sharing
 engine/models/text/encoder/model.safetensors
 engine/models/voice/encoder/emotion2vec_base.pt
+
+# Report build artifacts (deliverable is report/report.pdf only)
+report/page_checks/
+report/.DS_Store
+report/*.aux
+report/*.log
+report/*.out
+report/group_report.tex
+report/group_report.pdf
+report/group_report.aux
+report/group_report.log
+report/group_report.out
