@@ -128,7 +128,7 @@ With voice weights installed under the encoder directory (`engine/models/voice/e
 
 On Python **3.13** (README-recommended), voice processing status is **processed** when weights are installed. Two kinds of audio are used:
 
-- **Synthetic teaching tones** (`assets/audio/calm_clean.wav`, `agitated_clean.wav`, noise and speaker variants) support automated tests of prosody, noise penalties, and speaker invariance. Under identical neutral text, calm versus agitated clean tones shift fused activity from about $-0.13$ to $+0.11$ (18 Nov 2026). emotion2vec often labels these out-of-domain tones as sadness or disgust, so they are **not** used as categorical emotion demos.
+- **Synthetic teaching tones** (`assets/audio/calm_clean.wav`, `agitated_clean.wav`, noise and speaker variants) support automated tests of prosody, noise penalties, and speaker invariance. They are **not** human speech: the voice stack (emotion2vec and the CREMA-D classifier) was trained on **acted human utterances**, so synthetic sine-like or tone-burst WAVs are **out-of-domain**. Attaching `calm_clean.wav` to neutral text can still place the map in a negative, low-activity quadrant (e.g. valence $\approx -0.18$, activity $\approx -0.16$) even though the filename says “calm”. **Reset session** clears Kalman state and frustration counters but **does not** correct this acoustic domain mismatch—only a new turn with different audio or text changes the measurement. Under identical neutral text, clean calm versus agitated kit tones can still shift fused **activity** (about $-0.13$ to $+0.11$, 18 Nov 2026), which is useful for engineering checks, but quadrant labels must not be read as validated human emotions. For that reason these files are **not** used as categorical emotion demos in the video.
 - **Held-out CREMA-D speech** in `assets/audio/demo_emotions/` supplies real acted categories for the **video demonstration** (Topic 4, 21 Nov 2026). Files are hash-verified against `engine/data/voice/manifest.json`.
 
 On Python 3.14 we observed FunASR failing to register Emotion2vec—document as an environment limitation, not a missing weight.
@@ -177,7 +177,7 @@ Held-out CREMA-D clips live in `assets/audio/demo_emotions/` (seven files, six e
 
 These runs show why the report separates **classifier category**, **voice-only VAD label** (`details.voice.voice_only.label`), **fused top-level label**, and **final action**: anger in the voice can raise activity and change policy even when the typed words are neutral. Happiness may map to a calm fused quadrant while the classifier still reports happiness. Failed audio processing leaves the text-only result unchanged (`voice` failure flag).
 
-The GUI and session logs record audio paths, voice diagnostics, and latency so evaluators can reproduce the demonstration offline. Synthetic kit WAVs remain for **engineering tests**; **CREMA-D demo_emotions** clips are the **presented speech evidence** for integrated voice.
+The GUI and session logs record audio paths, voice diagnostics, and latency so evaluators can reproduce the demonstration offline. Synthetic kit WAVs remain for **engineering tests** only; **CREMA-D demo_emotions** clips are the **presented speech evidence** for integrated voice. If a demonstration accidentally uses kit synthetic audio, the group should explain that the map can look “wrong” relative to everyday calm/angry speech because the models expect human acting, not classroom tones.
 
 ## Reproducibility checklist
 
@@ -247,7 +247,7 @@ These runs informed the error-analysis notes above; only M1–M4 determine manda
 
 ## Optional voice channel (evaluation summary)
 
-Offline CREMA-D classifier metrics (§3.4) measure acted speech in isolation. The **integrated** channel is evidenced by: (1) **23/23** tests including voice fusion and failure safety; (2) **processed** voice status with weights on Python 3.13; (3) **demo_emotions** runs under fixed neutral text, showing classifier output, fused state, and policy change (e.g. anger → empathic reply); (4) limitations—acted actors, English-centric text, and cases where fused label stays neutral while voice-only sub-fields show emotion. This satisfies the Evaluation Guide expectation that optional voice be integrated, demonstrated, tested, documented with limits, and explainable to the group.
+Offline CREMA-D classifier metrics (§3.4) measure acted speech in isolation. The **integrated** channel is evidenced by: (1) **23/23** tests including voice fusion and failure safety; (2) **processed** voice status with weights on Python 3.13; (3) **demo_emotions** runs under fixed neutral text, showing classifier output, fused state, and policy change (e.g. anger → empathic reply); (4) limitations—acted actors, English-centric text, **synthetic kit WAVs misaligned with human-speech training** (misleading map even after reset), and cases where fused label stays neutral while voice-only sub-fields show emotion. This satisfies the Evaluation Guide expectation that optional voice be integrated, demonstrated, tested, documented with limits, and explainable to the group.
 
 # Challenges and lessons learned
 
