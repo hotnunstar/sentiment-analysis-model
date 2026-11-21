@@ -25,6 +25,7 @@ The six actions are `ANSWER`, `ANSWER_EMPATHIC`, `ASK_CLARIFICATION`,
 | `harness/` | Shared interface, contract, session and logging code |
 | `scenarios/` | Four mandatory and four practice conversations |
 | `tests/` | Contract, voice and Topic 4 integration tests |
+| `assets/audio/` | Held-out CREMA-D demo speech and synthetic engineering signals |
 | `logs/` | Plain-text session logs created while the program runs |
 | `check_project.py` | Read-only installation and model-file check |
 
@@ -107,6 +108,62 @@ flags and session log. Select **3D view** to include dominance.
 
 To attach voice, type a message, choose **Audio (optional)...**, select a WAV
 file such as one from `assets/audio/`, and press **Send**.
+
+## Optional voice channel
+
+The voice path runs locally and has three stages:
+
+1. A frozen [`emotion2vec_base`](https://huggingface.co/emotion2vec/emotion2vec_base)
+   encoder converts the complete utterance into a 768-dimensional emotional
+   speech embedding. The original model was self-supervised on 262 hours of
+   open-source emotional speech; it extracts vocal patterns rather than
+   determining a speaker's true internal emotional state.
+2. A logistic-regression classifier trained on acted human speech from
+   [CREMA-D](https://github.com/CheyneyComputerScience/CREMA-D) predicts one of
+   six categories: anger, disgust, fear, happiness, neutral or sadness. Actors
+   are separated between the train, development and test splits.
+3. Speaker-normalised prosody supplies an activity estimate. The engine maps
+   the voice result onto valence, activity and dominance and fuses it with the
+   text estimate. Consequently, the voice-only category, voice-only VAD label
+   and final fused label can differ.
+
+The encoder weight and trained classifiers are loaded from
+`engine/models/voice/`; prediction does not download a model or send the audio
+to an external service. CREMA-D contains acted English speech, not spontaneous
+customer-support calls, so its predictions should be treated as estimates and
+not as ground-truth emotions.
+
+### Voice demonstration audio
+
+The categorical voice demonstration uses the seven WAV files in
+`assets/audio/demo_emotions/`. They are real acted-speech recordings from the
+official CREMA-D `AudioWAV` collection, distributed under the Open Database
+License. All seven belong to held-out test actors, were absent from classifier
+training, and are checked against the SHA-256 values in
+`engine/data/voice/manifest.json`. The set covers all six classifier categories
+and includes a second anger example.
+
+For a reproducible comparison, start a new conversation before every file and
+use the same neutral text:
+
+```text
+Here is my message.
+```
+
+Recommended examples are:
+
+| File | Intended CREMA-D category | Demonstration purpose |
+|---|---|---|
+| `1013_WSI_ANG_XX.wav` | Anger | Clearest example of voice changing the policy to an empathic answer |
+| `1020_DFA_HAP_XX.wav` | Happiness | Positive contrast; may map to the project's calm VAD region |
+| `1065_ITS_NEU_XX.wav` | Neutral | Neutral comparison |
+
+See `assets/audio/demo_emotions/README.txt` for all seven files and their
+expected outputs. The other WAV files directly under `assets/audio/`—such as
+`calm_clean.wav`, `agitated_clean.wav` and the speaker variants—are synthetic
+teaching signals. They test noise handling, prosody and speaker invariance, but
+they are not human speech and must not be presented as validated emotion
+examples.
 
 ## Run the mandatory scenarios
 
