@@ -1,9 +1,16 @@
 # Report revision summary (final targeted pass)
 
-**Date:** 18 November 2026  
+**Date:** 21 November 2026 (voice demo update)  
 **Files:** `report/report.md`, `report/report.pdf`, `report/pandoc-template.tex`, `evaluation_compliance.md`.
 
-## Changes in this pass
+## Voice / sound demo update (21 Nov 2026, Tomás Rêgo commits)
+
+- §4.3: synthetic kit WAVs vs `assets/audio/demo_emotions/` CREMA-D clips.
+- §6: video script, session reset, 21 Nov 23/23 validation, new subsection **Voice demonstration with sound**.
+- §7: optional voice evaluation summary for Evaluation Guide bonus criteria.
+- Abstract: CREMA-D speech demonstration mentioned.
+
+## Changes in prior final pass
 
 1. **A4 format** — `a4paper` on `article` and `[a4paper,margin=2.4cm]{geometry}` in `pandoc-template.tex`; verified **595.3 × 841.9 pt**.
 2. **M1–M4 interpretation** — New §7.3 (~500 words) on strengths/weaknesses per mandatory scenario.

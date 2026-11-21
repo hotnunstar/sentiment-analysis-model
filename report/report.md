@@ -9,7 +9,7 @@ author:
 date: "MIAA 2025/2026 · Project AC — November 2026"
 numbersections: true
 abstract: |
-  Customer-support assistants that answer only keywords miss frustration building over several messages, sarcastic or ambiguous wording, and explicit legal or human-agent requests. We built an offline NovaShop affective engine that estimates valence, activity, dominance, confidence, and a discrete label from text, optionally fuses a voice reading, maintains conversation state, and selects one of six support actions. Text perception uses frozen DistilBERT embeddings and Ridge regression trained on EmoBank; an optional CREMA-D voice channel supplies class probabilities and speaker-invariant prosody. Affective estimates are rescaled and combined with a per-dimension Kalman filter; a deterministic policy maps state and phrase patterns to actions and template replies. On held-out EmoBank text, mean MAE is 0.083 with valence Pearson $r = 0.686$ on $n = 981$ test sentences. With Python 3.13, all 23 automated tests pass, including voice integration; mandatory scenarios M1–M4 meet action-level acceptance criteria, while qualitative SAM checks reveal partial weaknesses on early frustration and sarcastic valence. Processing is local; limitations include English-centric training, acted voice data, and emotion estimates that are not ground truth.
+  Customer-support assistants that answer only keywords miss frustration building over several messages, sarcastic or ambiguous wording, and explicit legal or human-agent requests. We built an offline NovaShop affective engine that estimates valence, activity, dominance, confidence, and a discrete label from text, optionally fuses a voice reading, maintains conversation state, and selects one of six support actions. Text perception uses frozen DistilBERT embeddings and Ridge regression trained on EmoBank; an optional CREMA-D voice channel supplies class probabilities and speaker-invariant prosody. Affective estimates are rescaled and combined with a per-dimension Kalman filter; a deterministic policy maps state and phrase patterns to actions and template replies. On held-out EmoBank text, mean MAE is 0.083 with valence Pearson $r = 0.686$ on $n = 981$ test sentences. With Python 3.13, all 23 automated tests pass, including voice integration; the voice channel is demonstrated with held-out CREMA-D speech clips; mandatory scenarios M1–M4 meet action-level acceptance criteria, while qualitative SAM checks reveal partial weaknesses on early frustration and sarcastic valence. Processing is local; limitations include English-centric training, acted voice data, and emotion estimates that are not ground truth.
 ---
 
 # Introduction
@@ -126,7 +126,12 @@ Consider M2 turn by turn: a polite delay question may measure $v \approx -0.03$,
 
 With voice weights installed under the encoder directory (`engine/models/voice/encoder/`), voice adds a second measurement: classifier-derived valence and dominance (via NRC VAD emotion anchors), prosodic activity without absolute pitch (mitigating speaker bias), and spectral-flatness noise penalties. When audio cannot be processed, the engine sets a failure flag, keeps the text-only estimate, and does not crash the session.
 
-On Python **3.13** (README-recommended), voice processing status is **processed** for kit WAVs. Identical neutral text with `calm_clean.wav` versus `agitated_clean.wav` shifts fused activity from about $-0.13$ to $+0.11$ (18 Nov 2026 check). On Python 3.14 we observed FunASR failing to register Emotion2vec—document as an environment limitation, not a missing weight.
+On Python **3.13** (README-recommended), voice processing status is **processed** when weights are installed. Two kinds of audio are used:
+
+- **Synthetic teaching tones** (`assets/audio/calm_clean.wav`, `agitated_clean.wav`, noise and speaker variants) support automated tests of prosody, noise penalties, and speaker invariance. Under identical neutral text, calm versus agitated clean tones shift fused activity from about $-0.13$ to $+0.11$ (18 Nov 2026). emotion2vec often labels these out-of-domain tones as sadness or disgust, so they are **not** used as categorical emotion demos.
+- **Held-out CREMA-D speech** in `assets/audio/demo_emotions/` supplies real acted categories for the **video demonstration** (Topic 4, 21 Nov 2026). Files are hash-verified against `engine/data/voice/manifest.json`.
+
+On Python 3.14 we observed FunASR failing to register Emotion2vec—document as an environment limitation, not a missing weight.
 
 # Decision-making and robustness — Expert Topic 3 (Mina Faltos, 34388)
 
@@ -150,9 +155,29 @@ Tomás Rêgo integrated Topics 1–3 with the official kit without changing mode
 
 `check_project.py` reports Python version, dependencies, and whether text and voice weight files are present; text and voice readiness are listed separately so a missing voice checkpoint does not falsely mark the mandatory text channel as broken. `tests/test_topic4.py` uses a lightweight **FakeEngine** with the same public API to verify contract clipping, session logs, scenario file presence, and README instructions—eight tests that run quickly without loading neural models.
 
-With dependencies and weights installed, the full suite (`python -m unittest discover tests -v`) exercises engine contract tests, Topic 4 harness tests, voice preprocessing tests, and voice integration tests that call the real encoder. Splitting **FakeEngine** harness tests from heavyweight model tests is deliberate: integration and logging failures surface in seconds, while perception tests run only when weights are present. **Validated environment (18 Nov 2026):** Python **3.13**, venv `.venv313`, text and voice weights present, `check_project.py` **READY**, **23/23 tests OK**, including four voice integration tests that previously skipped without `emotion2vec_base.pt`.
+With dependencies and weights installed, the full suite (`python -m unittest discover tests -v`) exercises engine contract tests, Topic 4 harness tests, voice preprocessing tests, and voice integration tests that call the real encoder. Splitting **FakeEngine** harness tests from heavyweight model tests is deliberate: integration and logging failures surface in seconds, while perception tests run only when weights are present.
 
-The demonstration order is: checker → full tests → mandatory scenarios M1–M4 → session log; optional voice in the GUI with kit WAVs. Large weights (`model.safetensors`, emotion2vec checkpoint) ship in the offline zip, not Git. Test success means the public contract and scenarios still pass after integration; it does not by itself prove emotion recognition accuracy on unseen real customers.
+**Validated environments:** on 18 Nov 2026 (Python **3.13**, `.venv313`) the suite reached **23/23** with voice weights installed. On **21 Nov 2026**, Tomás Rêgo re-ran `check_project.py` with text and voice **[READY]** and reported **23 tests passed, 0 skipped** (3 contract, 8 Topic 4, 12 voice/acoustic), with both large encoder weights present (`Topic 4 - Handover.md`).
+
+The demonstration order follows `TOPIC_4_VIDEO_SCRIPT.md`: checker → full tests → GUI with **reset between each** mandatory scenario (M1–M4, so Kalman state and frustration streak do not leak) → exported session log → optional **voice with sound files**. Large weights ship in the offline zip, not Git.
+
+## Voice demonstration with sound (Topic 4)
+
+The optional channel is demonstrated in the five-minute video with **neutral text** and a user-selected WAV:
+
+> Here is my message.
+
+Held-out CREMA-D clips live in `assets/audio/demo_emotions/` (seven files, six emotion classes; ODbL). Example outcomes documented in the repository README:
+
+| Audio file | Classifier (`predicted_emotion`) | Fused label (illustrative) | Action |
+|------------|----------------------------------|----------------------------|--------|
+| `1013_WSI_ANG_XX.wav` | anger | neutral (text dominates) with angry voice reading | **ANSWER_EMPATHIC** |
+| `1020_DFA_HAP_XX.wav` | happiness | calm | ANSWER |
+| `1065_ITS_NEU_XX.wav` | neutral | neutral | ANSWER |
+
+These runs show why the report separates **classifier category**, **voice-only VAD label** (`details.voice.voice_only.label`), **fused top-level label**, and **final action**: anger in the voice can raise activity and change policy even when the typed words are neutral. Happiness may map to a calm fused quadrant while the classifier still reports happiness. Failed audio processing leaves the text-only result unchanged (`voice` failure flag).
+
+The GUI and session logs record audio paths, voice diagnostics, and latency so evaluators can reproduce the demonstration offline. Synthetic kit WAVs remain for **engineering tests**; **CREMA-D demo_emotions** clips are the **presented speech evidence** for integrated voice.
 
 ## Reproducibility checklist
 
@@ -173,7 +198,7 @@ Evaluation combines three layers: (1) **EmoBank benchmark metrics** for text reg
 | M3 | Human and authority | Met — OFFER_HUMAN, ESCALATE |
 | M4 | Clarify; PT close | Met on actions — ASK_CLARIFICATION; PT CLOSE_POSITIVE |
 
-Logs: `logs/session_20261118_*.txt`; M2 demo copy: `logs/demo_session.txt`. Passing here means each turn’s **action** matched the scenario file; it does not require perfect valence on every turn.
+Logs: `logs/session_20261118_*.txt` (mandatory scenarios, 18 Nov 2026). The delivery video exports a fresh session log to `logs/demo_session.txt` per Topic 4 instructions. Passing here means each turn’s **action** matched the scenario file; it does not require perfect valence on every turn.
 
 ## Interpretation of mandatory scenarios (M1–M4)
 
@@ -220,6 +245,10 @@ The engine cannot guarantee correct behaviour on hidden examiner messages, relia
 
 These runs informed the error-analysis notes above; only M1–M4 determine mandatory action acceptance.
 
+## Optional voice channel (evaluation summary)
+
+Offline CREMA-D classifier metrics (§3.4) measure acted speech in isolation. The **integrated** channel is evidenced by: (1) **23/23** tests including voice fusion and failure safety; (2) **processed** voice status with weights on Python 3.13; (3) **demo_emotions** runs under fixed neutral text, showing classifier output, fused state, and policy change (e.g. anger → empathic reply); (4) limitations—acted actors, English-centric text, and cases where fused label stays neutral while voice-only sub-fields show emotion. This satisfies the Evaluation Guide expectation that optional voice be integrated, demonstrated, tested, documented with limits, and explainable to the group.
+
 # Challenges and lessons learned
 
 Compressed regression outputs required map rescaling and Kalman tracking instead of trusting raw scores alone. Calibrated confidence was necessary so Topic 3 could use a $0.40$ threshold meaningfully. Integrating voice demanded large checkpoints, Python 3.13 for FunASR registration, and honest separation of **processed audio** from improved customer outcomes. Sarcasm and negation remain the dominant text failure modes; the policy’s clarification and streak rules are deliberate compensations, not fixes to perception. Coordinating five topics relied on handover documents and fixed scenario checklists. Cross-platform model fingerprints were needed so the same bundle runs on Windows and macOS.
@@ -241,7 +270,7 @@ Per Evaluation Guide §8, AI tools were permitted when work was verified and exp
 | Topic 1 (text/voice) | ChatGPT for setup, classifier comparison, and test phrasing | Held-out metrics in `engine/results/`; manual WAV checks (see Topic 1 handovers) |
 | Topic 2 (affective model) | Claude via Claude Code for design options and drafts | Reproducibility commands and tests in Topic 2 handovers |
 | Topic 3 (decision policy) | **Not recorded** in `Topic 3 - Handover.md` (no AI log section found) | Scenario M1–M4 and policy behaviour described in that handover; **Mina Faltos to confirm** whether AI assisted policy design or reply templates |
-| Topic 4 (integration) | AI review of brief, checker and Topic 4 test drafts | `tests/test_topic4.py`; manual review of README and harness path |
+| Topic 4 (integration, voice demo assets) | AI review of brief, checker, Topic 4 tests, demo script; CREMA-D clip packaging | `tests/test_topic4.py`; 21 Nov 2026 full suite; `assets/audio/demo_emotions/` README |
 | Topic 5 / report | Editor assistance for structure, tables, and LaTeX/PDF build | Cross-check against `metrics.json`, 18 Nov scenario logs, 23/23 tests on Python 3.13 |
 | Report merge (Tomás Silva) | Cursor AI for academic rewrite and layout fixes | Visual PDF review; figures unchanged from result files |
 
