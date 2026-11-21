@@ -11,8 +11,11 @@
 5. Test `assets/audio/demo_emotions/1013_WSI_ANG_XX.wav` once before recording.
    It is real acted speech from the held-out CREMA-D test split. The first voice
    request loads the large model and can take a few seconds.
-6. Start a fresh application session so the video creates a clean log.
-7. After recording, copy that real log to `logs/demo_session.txt` for delivery.
+6. Start a fresh application session. Use **Reset session** before every
+   scenario and voice example; each reset creates a separate clean log.
+7. Keep the logs created during the recording. Copy one representative verified
+   log to `logs/demo_session.txt` for delivery and retain the remaining scenario
+   logs with the submitted demo evidence if space permits.
 
 ## 0:00–0:30 — Start and interface
 
@@ -30,13 +33,21 @@ Suggested narration:
 > selected action and the affective map. Every turn is also written to a
 > plain-text session log.
 
-Briefly point to the 2D map, 3D checkbox, metrics, scenario selector, optional
-audio selector and log. The project demonstrates text and voice only; do not
-select or discuss the image input as an implemented channel.
+Briefly point to the 2D map, 3D checkbox, metrics, scenario selector,
+**Reset session**, optional audio selector and log. Explain once:
+
+> I reset the session before every scenario. This clears the conversation
+> history, affective Kalman state and frustration streak, so one scenario cannot
+> influence the next. It also starts a new session log.
+
+The project demonstrates text and voice only; do not select or discuss the image
+input as an implemented channel.
 
 ## 0:30–1:15 — M1 calm FAQ
 
-Select and play `M1`.
+1. Click **Reset session**.
+2. Select `M1`.
+3. Click **Play scenario**.
 
 Suggested narration:
 
@@ -48,7 +59,9 @@ Point to the numbered map points, confidence and final action.
 
 ## 1:15–2:10 — M2 growing frustration
 
-Select and play `M2`.
+1. Wait until M1 has completely finished.
+2. Click **Reset session** and show that the conversation and map are empty.
+3. Select `M2` and click **Play scenario**.
 
 Suggested narration:
 
@@ -62,7 +75,9 @@ changes. Do not claim that every emotional prediction is perfectly accurate.
 
 ## 2:10–2:55 — M3 explicit requests
 
-Select and play `M3`.
+1. Wait until M2 has completely finished.
+2. Click **Reset session**.
+3. Select `M3` and click **Play scenario**.
 
 Suggested narration:
 
@@ -74,7 +89,9 @@ Suggested narration:
 
 ## 2:55–3:40 — M4 robustness
 
-Select and play `M4`.
+1. Wait until M3 has completely finished.
+2. Click **Reset session**.
+3. Select `M4` and click **Play scenario**.
 
 Suggested narration:
 
@@ -88,7 +105,9 @@ Point to the sarcasm flag and lower confidence when visible.
 
 ## 3:40–4:15 — Log and software evidence
 
-Expand **Session log**, then open the matching file in `logs/`.
+After M4 finishes, expand **Session log**, then open the matching newest file in
+`logs/`. Because the session was reset between scenarios, this log contains only
+M4; the preceding scenarios have their own separate timestamped log files.
 
 Suggested narration:
 
@@ -99,8 +118,8 @@ Suggested narration:
 
 ## 4:15–4:55 — Voice channel
 
-Start a new conversation with **New conversation** so the previous scenarios do
-not influence the voice result. Type `Here is my message.`, select
+Click **Reset session** so M4 cannot influence the voice result. Type
+`Here is my message.`, select
 **Audio (optional)...**, attach
 `assets/audio/demo_emotions/1013_WSI_ANG_XX.wav` and send it. This held-out
 acted-speech sample is labelled and predicted as anger. In the verified demo
@@ -120,7 +139,7 @@ Point to the increased activity, the voice information in `details`, and the
 confidence value. Do not claim that the voice classifier alone determines the
 final state: text and voice are fused by the affective-state component.
 
-If time permits, start another new conversation with the same text and attach
+If time permits, click **Reset session** again, use the same text and attach
 `assets/audio/demo_emotions/1020_DFA_HAP_XX.wav`. Point out that the classifier
 predicts `happiness`, while the VAD-derived and fused label is `calm`. This shows
 variation without claiming that classifier categories and final labels are the

@@ -65,8 +65,10 @@ demo and included in the delivered project copy. The optional voice weight is
 also included because voice is demonstrated in the final video.
 
 The demonstration follows the same sequence on every machine: check the local
-installation, run the automated tests, start the graphical application, play M1
-to M4 and inspect the resulting session log. M1 demonstrates normal FAQ handling
+installation, run the automated tests, start the graphical application, reset
+the session before each scenario, play M1 to M4 and inspect the resulting logs.
+Resetting prevents the Kalman state, frustration streak and conversation history
+from carrying over between independent scenarios. M1 demonstrates normal FAQ handling
 and positive closure. M2 demonstrates accumulated frustration and escalation.
 M3 demonstrates that explicit human and legal requests have priority. M4
 demonstrates safe behavior for ambiguity, sarcasm, negation and Portuguese input.

@@ -132,6 +132,11 @@ not overwrite a previous log.
 
 ## 7. Mandatory demo scenarios
 
+The operator must click **Reset session** before M1, M2, M3 and M4. This calls
+`Session.reset()`, which clears the interface history, creates a new log and
+calls `Engine.reset()` to clear the Kalman state and frustration streak. Without
+this step, the ending of one scenario can affect the starting state of the next.
+
 - **M1 — calm FAQ:** normal questions should be answered and a positive ending
   should close positively.
 - **M2 — growing frustration:** the state becomes more negative/active, repeated
