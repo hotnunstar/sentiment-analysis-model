@@ -225,14 +225,52 @@ All checks pass: agitated > calm, speaker_high ≈ speaker_low, noise lowers con
 ### Integration example
 Same text "I am still waiting for my order.": without audio `neutral` (activity +0.08); with an angry test-actor recording `frustration` (valence −0.37, activity +0.44).
 
+### Final held-out speech demo validation (21 November 2026)
+
+The final demo assets use real acted speech from CREMA-D test actors rather than
+the synthetic course tones. Each run started from a reset state and used the same
+neutral text, `"Here is my message."`. All files matched the SHA-256 values in
+the voice manifest.
+
+| File | Classifier output | Voice-only VAD label | Voice V / A / D | Fused label | Confidence | Action |
+|---|---|---|---|---|---:|---|
+| `1013_WSI_ANG_XX.wav` | anger | anger | -0.744 / +0.884 / +0.472 | neutral | 0.605 | `ANSWER_EMPATHIC` |
+| `1020_DFA_HAP_XX.wav` | happiness | calm | +1.000 / +0.430 / +1.000 | calm | 0.544 | `ANSWER` |
+| `1020_WSI_SAD_XX.wav` | sadness | sadness | -0.994 / -0.019 / -1.000 | neutral | 0.582 | `ANSWER` |
+| `1036_IWL_FEA_XX.wav` | fear | sadness | -0.954 / +0.690 / -0.624 | neutral | 0.577 | `ANSWER` |
+| `1037_IOM_DIS_XX.wav` | disgust | sadness | -1.000 / -0.004 / -0.553 | neutral | 0.581 | `ANSWER` |
+| `1065_ITS_NEU_XX.wav` | neutral | neutral | -0.070 / +0.247 / -0.430 | neutral | 0.678 | `ANSWER` |
+
+Three outputs must not be confused in the report:
+
+1. `details.voice.predicted_emotion` is the six-class emotion2vec + logistic
+   regression category.
+2. `details.voice.voice_only.label` is derived from the voice VAD coordinates;
+   therefore happiness can map to `calm`, while fear or disgust can map to
+   `sadness`.
+3. The top-level `label` and `action` are produced after text/voice fusion and
+   policy rules. For the anger example, the fused label remains `neutral`, but
+   the voice-only anger safeguard correctly selects `ANSWER_EMPATHIC`.
+
+These clips are clear demonstration examples, not a replacement for evaluation
+on the complete 1,142-recording test split.
+
 ### Automated tests (`tests/test_voice.py`, 12 tests)
 - Course pipeline: frame count, MFCC shape, mel values, pitch of a known tone, flatness of noise vs tone.
 - Speaker rule and course files: absolute pitch never an input; speaker_high ≈ speaker_low; agitated > calm (clean and noisy); noise detected only in noisy files.
 - Engine with voice (skipped if the voice weights are not downloaded): contract holds with audio; voice reading logged and moves the state; noise lowers confidence; broken audio keeps the text result.
 
-Full suite: `python -m unittest discover tests` → 15 tests, OK. Text-only messages and the four mandatory scenarios give exactly the same results as before the voice integration.
+Integration-stage suite, before the Topic 4 tests were added:
+`python -m unittest discover tests` → 15 tests, OK. Text-only messages and the
+four mandatory scenarios gave exactly the same results as before voice
+integration. The final repository result is recorded below.
 
 ---
+
+The earlier 15-test result above records the state immediately after voice
+integration. The final integrated run on 21 November 2026 used both encoder
+weights and produced **23 tests, OK, no skips**: 3 contract tests, 8 Topic 4
+integration tests and 12 voice/acoustic tests.
 
 ## 12. How to reproduce
 

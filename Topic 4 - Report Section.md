@@ -48,15 +48,13 @@ session history, log creation, engine-exception handling, the presence and
 contents of the eight scenarios, the public engine method signature and the main
 README commands. These tests complement the existing engine-contract and voice
 tests rather than replacing them. The repository now contains 23 automated tests
-in total. The full test suite must still be executed with the mandatory text
-weight installed; tests that need the optional voice encoder are skipped when
-that file is absent.
+in total: 3 contract tests, 8 Topic 4 integration tests and 12 voice/acoustic
+tests. On 21 November 2026, the complete suite passed with both encoder weights
+installed: **23 tests, OK, no errors and no skips**.
 
-All eight Topic 4 tests passed in the integration environment. The end-to-end
-suite could not complete there because the external machine-learning packages
-and encoder weights had not yet been installed. This dependency state was
-identified by the checker rather than hidden by the tests; the complete suite
-must be repeated in the prepared offline demonstration environment.
+The checker reported both the mandatory text mode and optional voice mode as
+`[READY]`. The large weights remain ignored by Git, so this successful local
+validation does not remove the need to include both files in the offline delivery.
 
 Reproducibility instructions were consolidated in the README. They describe a
 clean virtual-environment installation, the exact locations of the two large
@@ -64,7 +62,7 @@ encoder weights, the project checker, graphical and scenario commands, tests,
 logs and common failure cases. Because the final code demonstration is performed
 without connectivity, the mandatory text weight must be downloaded before the
 demo and included in the delivered project copy. The optional voice weight is
-also needed when voice is demonstrated.
+also included because voice is demonstrated in the final video.
 
 The demonstration follows the same sequence on every machine: check the local
 installation, run the automated tests, start the graphical application, play M1
@@ -72,8 +70,23 @@ to M4 and inspect the resulting session log. M1 demonstrates normal FAQ handling
 and positive closure. M2 demonstrates accumulated frustration and escalation.
 M3 demonstrates that explicit human and legal requests have priority. M4
 demonstrates safe behavior for ambiguity, sarcasm, negation and Portuguese input.
-The final part of the video opens the exported text log and, when the optional
-model is available, shows one voice example.
+The final part of the video opens the exported text log and shows a voice example
+using the locally installed optional encoder.
+
+The final voice demo uses real acted speech from held-out CREMA-D test actors,
+stored in `assets/audio/demo_emotions/`. The original `calm_*`, `agitated_*` and
+`speaker_*` files are synthetic teaching tones and are used only for prosody,
+noise and speaker-invariance checks. With the neutral text "Here is my message.",
+the selected anger recording produces classifier output `anger`, increases fused
+activity and changes the policy from `ANSWER` to `ANSWER_EMPATHIC`. A happiness
+recording provides a contrasting example: the classifier output is `happiness`,
+while the VAD-derived and fused label is `calm`. This demonstrates why classifier
+categories, voice-only VAD labels and the final fused label must be reported as
+different stages.
+
+The shared interface also exposes an image-path selector, but the engine does not
+perform image-affect inference. Images are therefore outside the implemented
+scope and are not presented as a working channel.
 
 The main limitation of the software packaging is the size of the model weights:
 they cannot be stored in the GitHub repository and have to be transferred with

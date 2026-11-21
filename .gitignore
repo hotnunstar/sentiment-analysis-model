@@ -3,6 +3,7 @@ __pycache__/
 .DS_Store
 __MACOSX/
 .venv/
+.uv-cache/
 venv/
 
 engine/data/text/embedding_cache/

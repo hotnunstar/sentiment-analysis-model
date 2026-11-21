@@ -105,6 +105,38 @@ The intended expression and script are informal references. The trials illustrat
 - **Uncalibrated scores.** Several non-speech clips received scores above 0.99 for sadness. These scores reflect the classifier’s preference within its six available classes and give no measured probability of correctness for these clips.
 - **Scope.** The benchmark covers acted English speech. The informal checks leave performance on real customer calls, unseen recording conditions and synthetic voices unmeasured. They were run in the prototype interface before the Topic 2 fusion documented above.
 
+## Final integrated demo validation (21 November 2026)
+
+The six original files named `calm_*`, `agitated_*` and `speaker_*` are
+synthetic, voice-like tones supplied for teaching prosody, noise and speaker
+invariance. They are not emotional speech recordings. As already observed above,
+emotion2vec assigns these out-of-domain tones to sadness or disgust with high
+scores. They remain valid for the acoustic tests, but they must not be presented
+as evidence of six-class speech-emotion accuracy.
+
+For the final integrated demo, seven real acted-speech clips from CREMA-D's
+held-out test actors were added under `assets/audio/demo_emotions/`. Their bytes
+were checked against the SHA-256 values in `engine/data/voice/manifest.json`.
+The set covers all six classifier categories and includes a second anger example.
+
+| Intended emotion | Demo file | Saved classifier prediction | Saved class score |
+|---|---|---|---:|
+| Anger | `1013_WSI_ANG_XX.wav` | anger | 0.999515 |
+| Disgust | `1037_IOM_DIS_XX.wav` | disgust | 0.992615 |
+| Fear | `1036_IWL_FEA_XX.wav` | fear | 0.998756 |
+| Happiness | `1020_DFA_HAP_XX.wav` | happiness | 0.997392 |
+| Neutral | `1065_ITS_NEU_XX.wav` | neutral | 0.999011 |
+| Sadness | `1020_WSI_SAD_XX.wav` | sadness | 0.988013 |
+
+These examples were selected for a clear demonstration, not as a replacement
+for evaluation on all 1,142 held-out recordings. The full test metrics above
+remain the evidence for classifier performance.
+
+The recommended demo uses neutral typed text with `1013_WSI_ANG_XX.wav`. The
+classifier predicts anger, the voice-only VAD label is anger, and Topic 3 changes
+the action from `ANSWER` to `ANSWER_EMPATHIC`. A happiness clip can be shown as a
+contrast if the video has enough time.
+
 ## AI log
 
 I used ChatGPT to work through the audio setup, compare classifiers and interpret the predictions shown in the professor’s interface.

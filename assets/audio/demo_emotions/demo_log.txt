@@ -1,0 +1,214 @@
+AFFECTIVE COMPUTING PROJECT - SESSION LOG
+Session started : 2026-11-21 16:33:26
+Engine          : engine.engine.Engine
+Log file        : C:\Users\zetom\AI_Projects\sentiment-analysis-model\logs\session_20261121_163326.txt
+This is a plain text file. Every message, the map values (x = valence, y = activity),
+the confidence and the chosen action are written below in order.
+------------------------------------------------------------------------
+[16:34:07] SCENARIO M1 - Calm customer with simple questions
+------------------------------------------------------------------------
+#1  16:34:07  source=scenario:M1
+INPUT      : Hi, how long does delivery usually take?
+MAP (x,y)   : valence=+0.03  activity=+0.09  dominance=-0.08
+CONFIDENCE : 0.61
+LABEL      : neutral
+ACTION     : ANSWER
+FLAGS      : -
+LATENCY    : 22 ms
+REPLY      : Standard delivery typically takes 2 to 5 business days. Would you like to share your order number so I can check its status?
+DETAILS    : {'raw_valence': 0.011789821088314056, 'raw_activity': 0.03033681958913803, 'raw_dominance': -0.021518751978874207, 'message_count': 1, 'word_count': 7, 'message_weight': [0.649, 0.561, 0.543], 'label_probabilities': {'neutral': 0.611, 'anger': 0.007, 'sadness': 0.036, 'joy': 0.018, 'calm': 0.197, 'frustration': 0.132}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': True, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#2  16:34:09  source=scenario:M1
+INPUT      : Thanks. And can I change my delivery address?
+MAP (x,y)   : valence=+0.03  activity=-0.06  dominance=+0.00
+CONFIDENCE : 0.64
+LABEL      : neutral
+ACTION     : ANSWER
+FLAGS      : -
+LATENCY    : 14 ms
+REPLY      : Standard delivery typically takes 2 to 5 business days. Would you like to share your order number so I can check its status?
+DETAILS    : {'raw_valence': 0.008486807346343994, 'raw_activity': -0.03366342931985855, 'raw_dominance': 0.00904202088713646, 'message_count': 2, 'word_count': 8, 'message_weight': [0.604, 0.589, 0.586], 'label_probabilities': {'neutral': 0.639, 'anger': 0.004, 'sadness': 0.027, 'joy': 0.008, 'calm': 0.194, 'frustration': 0.129}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': True, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#3  16:34:10  source=scenario:M1
+INPUT      : Perfect, that is all I needed. Thank you!
+MAP (x,y)   : valence=+0.57  activity=+0.84  dominance=+0.50
+CONFIDENCE : 0.40
+LABEL      : calm
+ACTION     : CLOSE_POSITIVE
+FLAGS      : -
+LATENCY    : 17 ms
+REPLY      : I'm glad everything is resolved. Thank you for contacting us!
+DETAILS    : {'raw_valence': 0.28237810730934143, 'raw_activity': 0.28783226013183594, 'raw_dominance': 0.12147508561611176, 'message_count': 3, 'word_count': 8, 'message_weight': [0.596, 0.594, 0.593], 'label_probabilities': {'neutral': 0.104, 'anger': 0.017, 'sadness': 0.001, 'joy': 0.477, 'calm': 0.397, 'frustration': 0.005}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': True, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+[16:34:31] SCENARIO M2 - Frustration that grows over the conversation
+------------------------------------------------------------------------
+#4  16:34:31  source=scenario:M2
+INPUT      : Hi, my order 4821 has not arrived yet.
+MAP (x,y)   : valence=+0.20  activity=+0.44  dominance=+0.32
+CONFIDENCE : 0.47
+LABEL      : neutral
+ACTION     : ANSWER_EMPATHIC
+FLAGS      : -
+LATENCY    : 13 ms
+REPLY      : I understand your frustration, and I'm sorry for the inconvenience. I'll help you find a solution.
+DETAILS    : {'raw_valence': -0.014433268457651138, 'raw_activity': 0.03426515311002731, 'raw_dominance': 0.02714892104268074, 'message_count': 4, 'word_count': 8, 'message_weight': [0.595, 0.595, 0.595], 'label_probabilities': {'neutral': 0.469, 'anger': 0.034, 'sadness': 0.006, 'joy': 0.127, 'calm': 0.309, 'frustration': 0.056}, 'frustration_streak': 1, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#5  16:34:33  source=scenario:M2
+INPUT      : It was supposed to be here three days ago.
+MAP (x,y)   : valence=+0.07  activity=+0.26  dominance=+0.15
+CONFIDENCE : 0.59
+LABEL      : neutral
+ACTION     : ANSWER_EMPATHIC
+FLAGS      : -
+LATENCY    : 16 ms
+REPLY      : I understand your frustration, and I'm sorry for the inconvenience. I'll help you find a solution.
+DETAILS    : {'raw_valence': -0.00842614471912384, 'raw_activity': 0.027802661061286926, 'raw_dominance': 0.0057115075178444386, 'message_count': 5, 'word_count': 9, 'message_weight': [0.595, 0.595, 0.595], 'label_probabilities': {'neutral': 0.589, 'anger': 0.022, 'sadness': 0.016, 'joy': 0.05, 'calm': 0.209, 'frustration': 0.113}, 'frustration_streak': 2, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#6  16:34:34  source=scenario:M2
+INPUT      : Nobody has answered my two emails. This is really frustrating.
+MAP (x,y)   : valence=-0.40  activity=+0.50  dominance=-0.01
+CONFIDENCE : 0.46
+LABEL      : frustration
+ACTION     : OFFER_HUMAN
+FLAGS      : -
+LATENCY    : 15 ms
+REPLY      : I understand. I can connect you with a human support agent who can help resolve this issue.
+DETAILS    : {'raw_valence': -0.21358183026313782, 'raw_activity': 0.13135075569152832, 'raw_dominance': -0.018016178160905838, 'message_count': 6, 'word_count': 10, 'message_weight': [0.595, 0.595, 0.595], 'label_probabilities': {'neutral': 0.298, 'anger': 0.092, 'sadness': 0.118, 'joy': 0.024, 'calm': 0.012, 'frustration': 0.455}, 'frustration_streak': 3, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#7  16:34:36  source=scenario:M2
+INPUT      : This is unacceptable! I want my money back!!
+MAP (x,y)   : valence=-0.58  activity=+1.00  dominance=+0.54
+CONFIDENCE : 0.77
+LABEL      : anger
+ACTION     : OFFER_HUMAN
+FLAGS      : -
+LATENCY    : 19 ms
+REPLY      : I understand. I can connect you with a human support agent who can help resolve this issue.
+DETAILS    : {'raw_valence': -0.20887814462184906, 'raw_activity': 0.4304175078868866, 'raw_dominance': 0.1313071846961975, 'message_count': 7, 'word_count': 8, 'message_weight': [0.595, 0.595, 0.595], 'label_probabilities': {'neutral': 0.012, 'anger': 0.768, 'sadness': 0.022, 'joy': 0.037, 'calm': 0.0, 'frustration': 0.16}, 'frustration_streak': 4, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': True, 'explicit_frustration': True, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#8  16:34:37  source=scenario:M2
+INPUT      : I am furious. I will contact a lawyer if this is not solved today.
+MAP (x,y)   : valence=-0.69  activity=+1.00  dominance=+0.56
+CONFIDENCE : 0.57
+LABEL      : anger
+ACTION     : ESCALATE
+FLAGS      : -
+LATENCY    : 15 ms
+REPLY      : I understand the seriousness of this situation. I will escalate your case to a human support team so they can review and address it.
+DETAILS    : {'raw_valence': -0.22888650000095367, 'raw_activity': 0.14079830050468445, 'raw_dominance': 0.08307566493749619, 'message_count': 8, 'word_count': 14, 'message_weight': [0.619, 0.619, 0.619], 'label_probabilities': {'neutral': 0.038, 'anger': 0.566, 'sadness': 0.017, 'joy': 0.01, 'calm': 0.0, 'frustration': 0.369}, 'frustration_streak': 5, 'frustration_streak_limit': 3, 'legal_signal': True, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+[16:34:59] SCENARIO M3 - Explicit requests that must not be missed
+------------------------------------------------------------------------
+#9  16:34:59  source=scenario:M3
+INPUT      : Can you tell me how to return a product?
+MAP (x,y)   : valence=-0.12  activity=+0.46  dominance=+0.56
+CONFIDENCE : 0.51
+LABEL      : neutral
+ACTION     : ANSWER
+FLAGS      : -
+LATENCY    : 12 ms
+REPLY      : We accept returns and exchanges within 30 days of delivery, provided the item is in its original condition.
+DETAILS    : {'raw_valence': 0.08454619348049164, 'raw_activity': 0.016516689211130142, 'raw_dominance': 0.08123388141393661, 'message_count': 9, 'word_count': 9, 'message_weight': [0.589, 0.589, 0.589], 'label_probabilities': {'neutral': 0.509, 'anger': 0.103, 'sadness': 0.007, 'joy': 0.067, 'calm': 0.077, 'frustration': 0.237}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': True, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#10  16:35:01  source=scenario:M3
+INPUT      : I do not want to talk to a bot, please connect me with a human agent.
+MAP (x,y)   : valence=-0.47  activity=+0.31  dominance=+0.50
+CONFIDENCE : 0.62
+LABEL      : frustration
+ACTION     : OFFER_HUMAN
+FLAGS      : -
+LATENCY    : 22 ms
+REPLY      : I understand. I can connect you with a human support agent who can help resolve this issue.
+DETAILS    : {'raw_valence': -0.20342542231082916, 'raw_activity': 0.04246709495782852, 'raw_dominance': 0.06716562807559967, 'message_count': 10, 'word_count': 16, 'message_weight': [0.618, 0.618, 0.618], 'label_probabilities': {'neutral': 0.275, 'anger': 0.076, 'sadness': 0.017, 'joy': 0.007, 'calm': 0.007, 'frustration': 0.618}, 'frustration_streak': 1, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': True, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': True, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#11  16:35:02  source=scenario:M3
+INPUT      : Thank you, but if this is not fixed I will go to the consumer protection authority.
+MAP (x,y)   : valence=-0.31  activity=+0.19  dominance=+0.42
+CONFIDENCE : 0.45
+LABEL      : neutral
+ACTION     : ESCALATE
+FLAGS      : -
+LATENCY    : 14 ms
+REPLY      : I understand the seriousness of this situation. I will escalate your case to a human support team so they can review and address it.
+DETAILS    : {'raw_valence': -0.06273829936981201, 'raw_activity': 0.021430332213640213, 'raw_dominance': 0.05290697515010834, 'message_count': 11, 'word_count': 16, 'message_weight': [0.613, 0.613, 0.613], 'label_probabilities': {'neutral': 0.45, 'anger': 0.036, 'sadness': 0.018, 'joy': 0.009, 'calm': 0.024, 'frustration': 0.463}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': True, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+[16:35:29] SCENARIO M4 - Ambiguous, sarcastic and non-English messages
+------------------------------------------------------------------------
+#12  16:35:29  source=scenario:M4
+INPUT      : ok
+MAP (x,y)   : valence=-0.05  activity=+0.12  dominance=+0.43
+CONFIDENCE : 0.35
+LABEL      : neutral
+ACTION     : ASK_CLARIFICATION
+FLAGS      : -
+LATENCY    : 10 ms
+REPLY      : I want to make sure I understand you correctly. Could you clarify what you mean?
+DETAILS    : {'raw_valence': 0.05186232924461365, 'raw_activity': 0.012044064700603485, 'raw_dominance': 0.06201335787773132, 'message_count': 12, 'word_count': 1, 'message_weight': [0.539, 0.539, 0.539], 'label_probabilities': {'neutral': 0.592, 'anger': 0.023, 'sadness': 0.011, 'joy': 0.023, 'calm': 0.142, 'frustration': 0.209}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': True, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#13  16:35:30  source=scenario:M4
+INPUT      : whatever, do what you want
+MAP (x,y)   : valence=+0.09  activity=+0.30  dominance=+0.80
+CONFIDENCE : 0.55
+LABEL      : neutral
+ACTION     : ASK_CLARIFICATION
+FLAGS      : -
+LATENCY    : 12 ms
+REPLY      : I want to make sure I understand you correctly. Could you clarify what you mean?
+DETAILS    : {'raw_valence': 0.05468210577964783, 'raw_activity': 0.08478587865829468, 'raw_dominance': 0.15354761481285095, 'message_count': 13, 'word_count': 5, 'message_weight': [0.581, 0.581, 0.581], 'label_probabilities': {'neutral': 0.553, 'anger': 0.041, 'sadness': 0.001, 'joy': 0.065, 'calm': 0.228, 'frustration': 0.112}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': True, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#14  16:35:32  source=scenario:M4
+INPUT      : Great, another delay. Really great.
+MAP (x,y)   : valence=+0.08  activity=+0.49  dominance=+0.57
+CONFIDENCE : 0.21
+LABEL      : neutral
+ACTION     : ASK_CLARIFICATION
+FLAGS      : possible_sarcasm
+LATENCY    : 16 ms
+REPLY      : I want to make sure I understand you correctly. Could you clarify what you mean?
+DETAILS    : {'raw_valence': 0.018741682171821594, 'raw_activity': 0.15196272730827332, 'raw_dominance': 0.033129654824733734, 'message_count': 14, 'word_count': 5, 'message_weight': [0.407, 0.407, 0.407], 'label_probabilities': {'neutral': 0.412, 'anger': 0.086, 'sadness': 0.011, 'joy': 0.144, 'calm': 0.211, 'frustration': 0.136}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': True, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#15  16:35:33  source=scenario:M4
+INPUT      : It is not bad, thanks.
+MAP (x,y)   : valence=+0.13  activity=+0.22  dominance=+0.35
+CONFIDENCE : 0.54
+LABEL      : neutral
+ACTION     : ANSWER
+FLAGS      : -
+LATENCY    : 16 ms
+REPLY      : Of course! I'm here to help. What would you like to know?
+DETAILS    : {'raw_valence': 0.04840683192014694, 'raw_activity': 0.009096391499042511, 'raw_dominance': 0.030336113646626472, 'message_count': 15, 'word_count': 5, 'message_weight': [0.616, 0.616, 0.616], 'label_probabilities': {'neutral': 0.541, 'anger': 0.022, 'sadness': 0.008, 'joy': 0.054, 'calm': 0.278, 'frustration': 0.097}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#16  16:35:35  source=scenario:M4
+INPUT      : Obrigado, ficou tudo resolvido.
+MAP (x,y)   : valence=+0.21  activity=+0.14  dominance=+0.44
+CONFIDENCE : 0.52
+LABEL      : neutral
+ACTION     : CLOSE_POSITIVE
+FLAGS      : -
+LATENCY    : 18 ms
+REPLY      : Fico contente por saber que ficou tudo resolvido. Obrigado pelo contacto!
+DETAILS    : {'raw_valence': 0.0793159008026123, 'raw_activity': 0.017504394054412842, 'raw_dominance': 0.07362416386604309, 'message_count': 16, 'word_count': 4, 'message_weight': [0.584, 0.584, 0.584], 'label_probabilities': {'neutral': 0.52, 'anger': 0.012, 'sadness': 0.003, 'joy': 0.041, 'calm': 0.362, 'frustration': 0.061}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': True, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#17  16:37:14  source=user
+INPUT      : Here is my message
+AUDIO      : C:/Users/zetom/AI_Projects/sentiment-analysis-model/assets/audio/demo_emotions/1009_DFA_ANG_XX.wav
+MAP (x,y)   : valence=-0.03  activity=+0.37  dominance=+0.39
+CONFIDENCE : 0.63
+LABEL      : neutral
+ACTION     : ANSWER_EMPATHIC
+FLAGS      : -
+LATENCY    : 4713 ms
+REPLY      : I understand your frustration, and I'm sorry for the inconvenience. I'll help you find a solution.
+DETAILS    : {'raw_valence': 0.06405052542686462, 'raw_activity': -0.01835322007536888, 'raw_dominance': 0.040907926857471466, 'message_count': 17, 'word_count': 4, 'message_weight': [0.579, 0.579, 0.579], 'label_probabilities': {'neutral': 0.645, 'anger': 0.039, 'sadness': 0.002, 'joy': 0.039, 'calm': 0.112, 'frustration': 0.162}, 'voice': {'status': 'processed', 'voice_only': {'valence': -0.7404, 'activity': 0.9553, 'dominance': 0.4334, 'label': 'anger'}, 'predicted_emotion': 'anger', 'emotion_probabilities': {'anger': 0.9533, 'fear': 0.032, 'disgust': 0.0072, 'happiness': 0.0067, 'neutral': 0.0007, 'sadness': 0.0002}, 'noise_factor': [1.04, 1.0, 1.08], 'message_weight': [0.256, 0.38, 0.487], 'acoustics': {'duration_s': 2.04, 'loudness_db': -9.2, 'pitch_median_hz': 301.9, 'pitch_sd_semitones': 5.97, 'flatness': 0.0141}}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': True, 'decision_policy': 'topic_3'}
+------------------------------------------------------------------------
+#18  16:37:41  source=user
+INPUT      : here is my message
+AUDIO      : C:/Users/zetom/AI_Projects/sentiment-analysis-model/assets/audio/demo_emotions/1020_DFA_HAP_XX.wav
+MAP (x,y)   : valence=+0.34  activity=+0.23  dominance=+0.68
+CONFIDENCE : 0.52
+LABEL      : calm
+ACTION     : ANSWER
+FLAGS      : -
+LATENCY    : 251 ms
+REPLY      : Of course! I'm here to help. What would you like to know?
+DETAILS    : {'raw_valence': 0.06405052542686462, 'raw_activity': -0.01835322007536888, 'raw_dominance': 0.040907926857471466, 'message_count': 18, 'word_count': 4, 'message_weight': [0.55, 0.535, 0.521], 'label_probabilities': {'neutral': 0.435, 'anger': 0.004, 'sadness': 0.0, 'joy': 0.031, 'calm': 0.518, 'frustration': 0.012}, 'voice': {'status': 'processed', 'voice_only': {'valence': 1.0, 'activity': 0.4297, 'dominance': 1.0, 'label': 'calm'}, 'predicted_emotion': 'happiness', 'emotion_probabilities': {'happiness': 0.9974, 'fear': 0.002, 'disgust': 0.0003, 'sadness': 0.0002, 'anger': 0.0001, 'neutral': 0.0}, 'noise_factor': [1.0, 1.0, 1.0], 'message_weight': [0.254, 0.362, 0.479], 'acoustics': {'duration_s': 2.1, 'loudness_db': -21.3, 'pitch_median_hz': 273.5, 'pitch_sd_semitones': 4.55, 'flatness': 0.0049}}, 'frustration_streak': 0, 'frustration_streak_limit': 3, 'legal_signal': False, 'human_request': False, 'refund_request': False, 'explicit_frustration': False, 'ambiguous_input': False, 'possible_sarcasm': False, 'positive_closure': False, 'unresolved_request': False, 'voice_empathy_override': False, 'decision_policy': 'topic_3'}

@@ -52,6 +52,7 @@ message does not close the graphical application.
 | `Topic 4 - Handover.md` | Technical explanation and handover for this topic |
 | `Topic 4 - Report Section.md` | Report-ready description of the Topic 4 work |
 | `TOPIC_4_VIDEO_SCRIPT.md` | Timed recording and narration plan for the demo |
+| `assets/audio/demo_emotions/` | Hash-verified held-out CREMA-D speech examples for the final voice demo |
 
 ## 4. Project checker
 
@@ -108,11 +109,10 @@ The full suite requires the installed dependencies and the mandatory text model
 weight. Voice integration tests are skipped when the optional voice encoder is
 not available.
 
-**Verification on 18 November 2026:** all eight Topic 4 tests passed. The full
-suite could not complete in this checkout because the machine-learning packages
-and large encoder weights were not installed; `check_project.py` reports those
-missing items explicitly. The full suite must be repeated in the prepared demo
-environment before delivery.
+**Final verification on 21 November 2026:** both text and voice modes reported
+`[READY]`. The complete suite ran with both large encoder weights installed:
+**23 tests passed, with no errors and no skips**. This consists of 3 contract
+tests, 8 Topic 4 integration tests and 12 voice/acoustic tests.
 
 ## 6. Interface and logs
 
@@ -142,15 +142,45 @@ not overwrite a previous log.
   clarification, negation is not treated as simple negativity, and a resolved
   Portuguese message closes positively.
 
-## 8. Current limitations and delivery check
+## 8. Final voice demo validation
 
-The large encoder weights are intentionally ignored by Git. Before an offline
-demonstration, copy `model.safetensors` and, if voice is shown,
-`emotion2vec_base.pt` to the paths documented in the README.
+The original `calm_*`, `agitated_*` and `speaker_*` WAVs are synthetic teaching
+tones. They remain useful for tests of prosody, noise and speaker invariance, but
+they are not valid examples of categorical speech emotion. The emotion2vec model
+reads these out-of-domain tones mainly as sadness or disgust.
+
+The final demo therefore uses real acted speech from held-out CREMA-D test
+actors in `assets/audio/demo_emotions/`. All WAVs were checked against the
+manifest SHA-256 values. With the neutral text `"Here is my message."`:
+
+- `1013_WSI_ANG_XX.wav` gives classifier output `anger`, voice-only VAD label
+  `anger`, raises fused activity and selects `ANSWER_EMPATHIC`;
+- `1020_DFA_HAP_XX.wav` gives classifier output `happiness` and VAD/fused label
+  `calm`;
+- the folder also contains held-out disgust, fear, neutral and sadness examples.
+
+The report and presentation must distinguish:
+
+- classifier category: `details.voice.predicted_emotion`;
+- label derived from voice VAD: `details.voice.voice_only.label`;
+- final state after text/voice fusion: top-level `label`;
+- final policy result: top-level `action`.
+
+The shared interface still exposes `image_path`, but this project implements
+text and voice only. Images can be selected and logged by the shared harness;
+the engine does not infer emotion from them, so image must not be presented as
+an implemented channel.
+
+## 9. Current limitations and delivery check
+
+The large encoder weights are intentionally ignored by Git. Both are installed
+in the validated local demo environment, but they will not be included by a Git
+clone. The offline delivery must therefore include both `model.safetensors` and
+`emotion2vec_base.pt` at the paths documented in the README.
 
 Before delivery:
 
-1. replace the owner placeholder at the top of this file;
+1. confirm the owner and group details in the submitted documents;
 2. prepare a clean virtual environment and install `requirements.txt`;
 3. add the model weights;
 4. run `check_project.py` and the complete test suite;
@@ -158,7 +188,7 @@ Before delivery:
 6. record the video using `TOPIC_4_VIDEO_SCRIPT.md`;
 7. copy the real video log to `logs/demo_session.txt` and include it in the zip.
 
-## 9. AI-use record
+## 10. AI-use record
 
 AI assistance was used to review the brief and repository, draft the project
 checker, draft Topic 4 tests, reorganize the README and prepare documentation.
