@@ -56,18 +56,18 @@ All groups use mandatory scenarios **M1–M4**: calm FAQ (M1), escalating frustr
 
 The following sequence links components without repeating per-expert implementation lists:
 
-1. **Customer input** — text and optional WAV.
-2. **Text perception (Topic 1)** — DistilBERT embedding and Ridge regression produce raw valence, activity, dominance; a surface sarcasm flag may be set.
-3. **Optional voice (Topics 1–2)** — emotion2vec features and a CREMA-D classifier yield class probabilities; prosody estimates activity; noise reduces voice weight.
-4. **Affective state (Topic 2)** — rescaling to the map, label, confidence, and a **Kalman filter** per dimension over the conversation.
-5. **Decision policy (Topic 3)** — deterministic rules select one of six actions and a template reply.
-6. **Interface** — contract normalisation, GUI or scenario runner, session log.
+1. **Customer input:** text and optional WAV.
+2. **Text perception (Topic 1):** DistilBERT embedding and Ridge regression produce raw valence, activity, dominance; a surface sarcasm flag may be set.
+3. **Optional voice (Topics 1–2):** emotion2vec features and a CREMA-D classifier yield class probabilities; prosody estimates activity; noise reduces voice weight.
+4. **Affective state (Topic 2):** rescaling to the map, label, confidence, and a **Kalman filter** per dimension over the conversation.
+5. **Decision policy (Topic 3):** deterministic rules select one of six actions and a template reply.
+6. **Interface:** contract normalisation, GUI or scenario runner, session log.
 
 Stateful filtering matters for M2: early turns can look emotionally weak while explicit frustration language later triggers `OFFER_HUMAN` via both affect and a **frustration streak** counter.
 
 ## Integration contract
 
-The public `Engine` returns one dictionary per turn. Numeric fields are clipped to kit ranges; the harness records contract violations instead of crashing the GUI. Optional `image_path` is accepted for compatibility but unused—there is no implemented face channel. This separation lets Topics 1–3 evolve internal models while Topic 4 and the scenario runner depend only on stable field names.
+The public `Engine` returns one dictionary per turn. Numeric fields are clipped to kit ranges; the harness records contract violations instead of crashing the GUI. Optional `image_path` is accepted for compatibility but unused; there is no implemented face channel. This separation lets Topics 1–3 evolve internal models while Topic 4 and the scenario runner depend only on stable field names.
 
 ## Actions and contract
 
@@ -106,7 +106,7 @@ MAE measures average absolute error on the normalised scale; smaller is better. 
 
 ## Optional voice classifier (Topic 1, integrated by Topic 2)
 
-For bonus voice points, Salim trained a **CREMA-D** emotion classifier: frozen **emotion2vec** utterance embeddings and logistic regression (actor-independent split). Held-out test metrics: accuracy **71.80%**, balanced accuracy **72.16%**, macro-F1 **0.7175** — on acted speech, not live call-centre audio.
+For bonus voice points, Salim trained a **CREMA-D** emotion classifier: frozen **emotion2vec** utterance embeddings and logistic regression (actor-independent split). Held-out test metrics: accuracy **71.80%**, balanced accuracy **72.16%**, macro-F1 **0.7175**, on acted speech, not live call-centre audio.
 
 # Affective model and multimodal integration — Expert Topic 2 (Nuno Araújo, 20078)
 
@@ -118,7 +118,7 @@ Six labels (`neutral`, `calm`, `joy`, `anger`, `frustration`, `sadness`) use thr
 
 ## Conversation state
 
-A one-dimensional **Kalman filter** runs per dimension: process noise allows affect to change; measurement noise grows for short or flagged sarcastic text. **Unclipped** internal state prevents a single extreme complaint from being forgotten on the next turn—important when raw valence on M2’s opening lines stays near neutral until explicit frustration phrases appear.
+A one-dimensional **Kalman filter** runs per dimension: process noise allows affect to change; measurement noise grows for short or flagged sarcastic text. **Unclipped** internal state prevents a single extreme complaint from being forgotten on the next turn; this matters when raw valence on M2’s opening lines stays near neutral until explicit frustration phrases appear.
 
 Consider M2 turn by turn: a polite delay question may measure $v \approx -0.03$, which looks almost neutral in isolation. After “three days late” the measurement remains weak, but the filter retains negative momentum. Once the customer writes “really frustrating,” $v$ drops sharply and activity rises; the policy then offers a human agent. Without temporal smoothing, a support system might treat each message as a fresh FAQ and miss escalation risk.
 
@@ -128,10 +128,10 @@ With voice weights installed under the encoder directory (`engine/models/voice/e
 
 On Python **3.13** (README-recommended), voice processing status is **processed** when weights are installed. Two kinds of audio are used:
 
-- **Synthetic teaching tones** (`assets/audio/calm_clean.wav`, `agitated_clean.wav`, noise and speaker variants) support automated tests of prosody, noise penalties, and speaker invariance. They are **not** human speech: the voice stack (emotion2vec and the CREMA-D classifier) was trained on **acted human utterances**, so synthetic sine-like or tone-burst WAVs are **out-of-domain**. Attaching `calm_clean.wav` to neutral text can still place the map in a negative, low-activity quadrant (e.g. valence $\approx -0.18$, activity $\approx -0.16$) even though the filename says “calm”. **Reset session** clears Kalman state and frustration counters but **does not** correct this acoustic domain mismatch—only a new turn with different audio or text changes the measurement. Under identical neutral text, clean calm versus agitated kit tones can still shift fused **activity** (about $-0.13$ to $+0.11$, 18 Nov 2026), which is useful for engineering checks, but quadrant labels must not be read as validated human emotions. For that reason these files are **not** used as categorical emotion demos in the video.
+- **Synthetic teaching tones** (`assets/audio/calm_clean.wav`, `agitated_clean.wav`, noise and speaker variants) support automated tests of prosody, noise penalties, and speaker invariance. They are **not** human speech: the voice stack (emotion2vec and the CREMA-D classifier) was trained on **acted human utterances**, so synthetic sine-like or tone-burst WAVs are **out-of-domain**. Attaching `calm_clean.wav` to neutral text can still place the map in a negative, low-activity quadrant (e.g. valence $\approx -0.18$, activity $\approx -0.16$) even though the filename says “calm”. **Reset session** clears Kalman state and frustration counters but **does not** correct this acoustic domain mismatch; only a new turn with different audio or text changes the measurement. Under identical neutral text, clean calm versus agitated kit tones can still shift fused **activity** (about $-0.13$ to $+0.11$, 18 Nov 2026), which is useful for engineering checks, but quadrant labels must not be read as validated human emotions. For that reason these files are **not** used as categorical emotion demos in the video.
 - **Held-out CREMA-D speech** in `assets/audio/demo_emotions/` supplies real acted categories for the **video demonstration** (Topic 4, 21 Nov 2026). Files are hash-verified against `engine/data/voice/manifest.json`.
 
-On Python 3.14 we observed FunASR failing to register Emotion2vec—document as an environment limitation, not a missing weight.
+On Python 3.14 we observed FunASR failing to register Emotion2vec. Document this as an environment limitation, not a missing weight.
 
 # Decision-making and robustness — Expert Topic 3 (Mina Faltos, 34388)
 
@@ -153,7 +153,7 @@ Policy design is intentionally **explainable**: graders and customers can trace 
 
 Tomás Rêgo integrated Topics 1–3 with the official kit without changing model weights or policy thresholds. Integration follows the shared path: scenario runner or GUI loads the public `Engine`, calls `reset()` and `process(text, audio_path, image_path)`, then normalises output through the harness contract and session logger.
 
-`check_project.py` reports Python version, dependencies, and whether text and voice weight files are present; text and voice readiness are listed separately so a missing voice checkpoint does not falsely mark the mandatory text channel as broken. `tests/test_topic4.py` uses a lightweight **FakeEngine** with the same public API to verify contract clipping, session logs, scenario file presence, and README instructions—eight tests that run quickly without loading neural models.
+`check_project.py` reports Python version, dependencies, and whether text and voice weight files are present; text and voice readiness are listed separately so a missing voice checkpoint does not falsely mark the mandatory text channel as broken. `tests/test_topic4.py` uses a lightweight **FakeEngine** with the same public API to verify contract clipping, session logs, scenario file presence, and README instructions: eight tests that run quickly without loading neural models.
 
 With dependencies and weights installed, the full suite (`python -m unittest discover tests -v`) exercises engine contract tests, Topic 4 harness tests, voice preprocessing tests, and voice integration tests that call the real encoder. Splitting **FakeEngine** harness tests from heavyweight model tests is deliberate: integration and logging failures surface in seconds, while perception tests run only when weights are present.
 
@@ -169,11 +169,22 @@ The optional channel is demonstrated in the five-minute video with **neutral tex
 
 Held-out CREMA-D clips live in `assets/audio/demo_emotions/` (seven files, six emotion classes; ODbL). Example outcomes documented in the repository README:
 
-| Audio file | Classifier (`predicted_emotion`) | Fused label (illustrative) | Action |
-|------------|----------------------------------|----------------------------|--------|
-| `1013_WSI_ANG_XX.wav` | anger | neutral (text dominates) with angry voice reading | **ANSWER_EMPATHIC** |
-| `1020_DFA_HAP_XX.wav` | happiness | calm | ANSWER |
-| `1065_ITS_NEU_XX.wav` | neutral | neutral | ANSWER |
+```{=latex}
+\medskip
+\begingroup\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\linewidth}{@{}>{\RaggedRight\arraybackslash\hsize=0.95\hsize}X >{\RaggedRight\arraybackslash\hsize=0.55\hsize}X >{\RaggedRight\arraybackslash\hsize=1.25\hsize}X >{\RaggedRight\arraybackslash\hsize=0.75\hsize}X@{}}
+\toprule
+\textbf{Audio file} & \textbf{Classifier} & \textbf{Fused label (illustrative)} & \textbf{Action} \\
+\midrule
+\nolinkurl{1013_WSI_ANG_XX.wav} & anger & neutral (text dominates); voice reads anger & \textbf{ANSWER\_EMPATHIC} \\
+\nolinkurl{1020_DFA_HAP_XX.wav} & happiness & calm & ANSWER \\
+\nolinkurl{1065_ITS_NEU_XX.wav} & neutral & neutral & ANSWER \\
+\bottomrule
+\end{tabularx}
+\endgroup
+```
 
 These runs show why the report separates **classifier category**, **voice-only VAD label** (`details.voice.voice_only.label`), **fused top-level label**, and **final action**: anger in the voice can raise activity and change policy even when the typed words are neutral. Happiness may map to a calm fused quadrant while the classifier still reports happiness. Failed audio processing leaves the text-only result unchanged (`voice` failure flag).
 
@@ -193,10 +204,10 @@ Evaluation combines three layers: (1) **EmoBank benchmark metrics** for text reg
 
 | ID | Expected (summary) | Outcome (18 Nov 2026) |
 |----|-------------------|------------------------|
-| M1 | Calm FAQ; positive close | Met — CLOSE_POSITIVE on thanks |
-| M2 | Escalation path | Met — OFFER_HUMAN, then ESCALATE |
-| M3 | Human and authority | Met — OFFER_HUMAN, ESCALATE |
-| M4 | Clarify; PT close | Met on actions — ASK_CLARIFICATION; PT CLOSE_POSITIVE |
+| M1 | Calm FAQ; positive close | Met: CLOSE_POSITIVE on thanks |
+| M2 | Escalation path | Met: OFFER_HUMAN, then ESCALATE |
+| M3 | Human and authority | Met: OFFER_HUMAN, ESCALATE |
+| M4 | Clarify; PT close | Met on actions: ASK_CLARIFICATION; PT CLOSE_POSITIVE |
 
 Logs: `logs/session_20261118_*.txt` (mandatory scenarios, 18 Nov 2026). The delivery video exports a fresh session log to `logs/demo_session.txt` per Topic 4 instructions. Passing here means each turn’s **action** matched the scenario file; it does not require perfect valence on every turn.
 
@@ -210,7 +221,7 @@ Read together, the four mandatory scripts show what the integrated engine is goo
 
 **M3 (explicit human and authority requests)** shows **intent precedence** over classifiers. Return-policy FAQ text is answered factually; phrases requesting a human agent trigger `OFFER_HUMAN` without requiring extreme negative valence, and consumer-authority wording triggers `ESCALATE`. This behaviour matches customer-protection expectations better than a pure emotion classifier would. It also explains why action-level pass rates can be high while EmoBank MAE remains imperfect on short administrative sentences.
 
-**M4 (ambiguity, sarcasm, negation, Portuguese)** tests **robustness** rather than benchmark accuracy. The single-word `ok` turn appropriately asks for clarification rather than guessing intent. Sarcastic praise about a delay is misread in valence (positive $v$) but still receives `ASK_CLARIFICATION` via the sarcasm flag—an example where policy mitigates a perception error. The Portuguese closing turn achieves the expected positive close action, but text encoders trained mainly on English should not be interpreted as strong evidence of multilingual affect understanding.
+**M4 (ambiguity, sarcasm, negation, Portuguese)** tests **robustness** rather than benchmark accuracy. The single-word `ok` turn appropriately asks for clarification rather than guessing intent. Sarcastic praise about a delay is misread in valence (positive $v$) but still receives `ASK_CLARIFICATION` via the sarcasm flag, an example where policy mitigates a perception error. The Portuguese closing turn achieves the expected positive close action, but text encoders trained mainly on English should not be interpreted as strong evidence of multilingual affect understanding.
 
 Across M1–M4, the system’s strength is **reliable routing** under the kit contract; its weakness is **fine-grained emotional truth** on sarcasm, weak opening frustration, and some negation patterns (see practice scenario P4).
 
@@ -220,7 +231,7 @@ Of twelve sampled mandatory turns: **9** full quadrant agreement, **2** partial 
 
 ## Error analysis
 
-Early M2 valence stays near neutral until explicit frustration wording—policy and streak compensate. M4 sarcasm can show positive valence while `ASK_CLARIFICATION` fires. P4 negation (“not happy at all”) under-reacts in regression. English DistilBERT limits Portuguese affect claims despite successful **actions** on the Portuguese close.
+Early M2 valence stays near neutral until explicit frustration wording; policy and streak compensate. M4 sarcasm can show positive valence while `ASK_CLARIFICATION` fires. P4 negation (“not happy at all”) under-reacts in regression. English DistilBERT limits Portuguese affect claims despite successful **actions** on the Portuguese close.
 
 ## Ethics, bias, and legal context
 
@@ -247,7 +258,7 @@ These runs informed the error-analysis notes above; only M1–M4 determine manda
 
 ## Optional voice channel (evaluation summary)
 
-Offline CREMA-D classifier metrics (§3.4) measure acted speech in isolation. The **integrated** channel is evidenced by: (1) **23/23** tests including voice fusion and failure safety; (2) **processed** voice status with weights on Python 3.13; (3) **demo_emotions** runs under fixed neutral text, showing classifier output, fused state, and policy change (e.g. anger → empathic reply); (4) limitations—acted actors, English-centric text, **synthetic kit WAVs misaligned with human-speech training** (misleading map even after reset), and cases where fused label stays neutral while voice-only sub-fields show emotion. This satisfies the Evaluation Guide expectation that optional voice be integrated, demonstrated, tested, documented with limits, and explainable to the group.
+Offline CREMA-D classifier metrics (§3.4) measure acted speech in isolation. The **integrated** channel is evidenced by: (1) **23/23** tests including voice fusion and failure safety; (2) **processed** voice status with weights on Python 3.13; (3) **demo_emotions** runs under fixed neutral text, showing classifier output, fused state, and policy change (e.g. anger → empathic reply); (4) limitations: acted actors, English-centric text, **synthetic kit WAVs misaligned with human-speech training** (misleading map even after reset), and cases where fused label stays neutral while voice-only sub-fields show emotion. This satisfies the Evaluation Guide expectation that optional voice be integrated, demonstrated, tested, documented with limits, and explainable to the group.
 
 # Challenges and lessons learned
 
@@ -255,11 +266,11 @@ Compressed regression outputs required map rescaling and Kalman tracking instead
 
 # Conclusion and future work
 
-We set out to build a reproducible affect-aware NovaShop engine that respects the kit contract, tracks conversation state, and selects among six actions using text and optional voice. The implemented pipeline—DistilBERT and Ridge text estimation, optional CREMA-D voice fusion, Kalman affective state, and a transparent policy—meets **action-level** acceptance on M1–M4 and passes **23/23** automated tests under Python 3.13 with voice weights installed. EmoBank correlations show moderate agreement for valence and weaker agreement for activity and dominance, which explains remaining perceptual weaknesses on sarcasm, negation, and weak opening frustration.
+We set out to build a reproducible affect-aware NovaShop engine that respects the kit contract, tracks conversation state, and selects among six actions using text and optional voice. The implemented pipeline (DistilBERT and Ridge text estimation, optional CREMA-D voice fusion, Kalman affective state, and a transparent policy) meets **action-level** acceptance on M1–M4 and passes **23/23** automated tests under Python 3.13 with voice weights installed. EmoBank correlations show moderate agreement for valence and weaker agreement for activity and dominance, which explains remaining perceptual weaknesses on sarcasm, negation, and weak opening frustration.
 
 The decision layer deliberately compensates for perception: explicit legal and human-agent phrases, frustration streaks, and clarification on sarcasm flags stabilise behaviour even when valence is imperfect. This is appropriate for a support assistant but must not be mistaken for accurate emotion reading.
 
-Future work could include stronger sarcasm and negation modelling, multilingual text encoders, customer-service domain evaluation, SAM studies on kit messages with ethics approval, and broader deployment testing across Python versions. The project demonstrates that **affect-aware routing** is feasible offline when estimation, state, and policy are engineered together—and that honest evaluation must separate **scenario success**, **benchmark metrics**, and **emotional ground truth**.
+Future work could include stronger sarcasm and negation modelling, multilingual text encoders, customer-service domain evaluation, SAM studies on kit messages with ethics approval, and broader deployment testing across Python versions. The project demonstrates that **affect-aware routing** is feasible offline when estimation, state, and policy are engineered together, and that honest evaluation must separate **scenario success**, **benchmark metrics**, and **emotional ground truth**.
 
 # AI usage and contributions
 
