@@ -280,7 +280,7 @@ Per Evaluation Guide §8, AI tools were permitted when work was verified and exp
 |------|---------------|----------------------|
 | Topic 1 (text/voice) | ChatGPT for setup, classifier comparison, and test phrasing | Held-out metrics in `engine/results/`; manual WAV checks (see Topic 1 handovers) |
 | Topic 2 (affective model) | Claude via Claude Code for design options and drafts | Reproducibility commands and tests in Topic 2 handovers |
-| Topic 3 (decision policy) | **Not recorded** in `Topic 3 - Handover.md` (no AI log section found) | Scenario M1–M4 and policy behaviour described in that handover; **Mina Faltos to confirm** whether AI assisted policy design or reply templates |
+| Topic 3 (decision policy) | Gemini / LLM assisted in reviewing Topic 3 decision policy edge cases, bilingual EN/PT regex coverage, and handover documentation structure draft | All rules in `engine/engine.py` were manually reviewed, tested against mandatory scenarios M1–M4, and verified with the automated contract, voice, and edge-case test suites |
 | Topic 4 (integration, voice demo assets) | AI review of brief, checker, Topic 4 tests, demo script; CREMA-D clip packaging | `tests/test_topic4.py`; 21 Nov 2026 full suite; `assets/audio/demo_emotions/` README |
 | Topic 5 / report | Editor assistance for structure, tables, and LaTeX/PDF build | Cross-check against `metrics.json`, 18 Nov scenario logs, 23/23 tests on Python 3.13 |
 | Report merge (Tomás Silva) | Cursor AI for academic rewrite and layout fixes | Visual PDF review; figures unchanged from result files |
