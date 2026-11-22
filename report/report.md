@@ -285,7 +285,7 @@ Per Evaluation Guide §8, AI tools were permitted when work was verified and exp
 | Topic 5 / report | Editor assistance for structure, tables, and LaTeX/PDF build | Cross-check against `metrics.json`, 18 Nov scenario logs, 23/23 tests on Python 3.13 |
 | Report merge (Tomás Silva) | Cursor AI for academic rewrite and layout fixes | Visual PDF review; figures unchanged from result files |
 
-**Needs human confirmation:** exact Cursor prompt history for the final report pass is not archived in the repository; each co-author should confirm their handover AI log before presentation (especially Topic 3).
+**Needs human confirmation:** exact Cursor prompt history for the final report pass is not archived in the repository; each co-author should confirm their handover AI log before presentation.
 
 \appendix
 
