@@ -327,4 +327,4 @@ python -c "from engine.engine import Engine; e = Engine(); r0 = e.process(''); a
 
 ## 12. AI Usage Log
 
-Gemini / LLM assisted in reviewing Topic 3 decision policy edge cases, bilingual EN/PT regex coverage, and handover documentation structure draftm, all rules in `engine/engine.py` were manually reviewed, tested against mandatory scenarios M1–M4, and verified with the automated contract, voice, and edge-case test suites
+Gemini / LLM assisted in reviewing Topic 3 decision policy edge cases, bilingual EN/PT regex coverage, and handover documentation structure draft, all rules in `engine/engine.py` were manually reviewed, tested against mandatory scenarios M1–M4, and verified with the automated contract, voice, and edge-case test suites
